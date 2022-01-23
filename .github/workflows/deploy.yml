@@ -4,7 +4,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-
+concurrency: 
+  group: gh-pages
+  cancel-in-progress: true
 jobs:
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
