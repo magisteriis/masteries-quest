@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <PageTitle>Champion Mastery (Blazor)</PageTitle>
 
@@ -10,29 +11,62 @@ Look up a summoner
 <EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-    <InputText id="name" @bind-Value="summonerSearch.SummonerName" />
-    <InputSelectEnum id="region" @bind-Value="summonerSearch.Region" />
-
-    <button type="submit">Submit</button>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="summoner-name">Summoner Name</label>
+            <InputText id="summoner-name" class="form-control" @bind-Value="summonerSearch.SummonerName" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="summoner-region">Region</label>
+            <InputSelectEnum id="summoner-region" class="form-control" @bind-Value="summonerSearch.Region" />      
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
+<h3 style="margin-top:36px">Masteries</h3>
 
-<p role="status">Returned data: @returnedData</p>
+<table class="table">
+    <tbody>
+        @foreach (var mastery in _masteries)
+        {
+            <tr>
+                <th>@mastery.ChampionId</th>
+                <td>@mastery.ChampionLevel</td>
+                <td>@mastery.ChampionPoints</td>
+                <td>@mastery.ChestGranted</td>
+                <td>@mastery.LastPlayTime</td>
+                <td>@mastery.TokensEarned</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
-    private string returnedData = "";
     private SummonerSearch summonerSearch = new();
+    private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
+    }
 
     private async Task HandleValidSubmit()
     {
         if (summonerSearch.SummonerName == null || summonerSearch.Region == null)
             return;
 
-        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (Camille.Enums.PlatformRoute)summonerSearch.Region))
+        _ = localStorage.SetItemAsync("region", summonerSearch.Region);
+
+        _masteries.Clear();
+
+        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (PlatformRoute)summonerSearch.Region))
         {
             var summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
-            returnedData = $"{summoner.Name}, {summoner.SummonerLevel}, {summoner.EncryptedPuuid}";
+            summonerSearch.SummonerName = summoner.Name;
+            var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+            foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
+                _masteries.Add(mastery);
         }
     }
 }

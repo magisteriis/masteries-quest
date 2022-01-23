@@ -12,7 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.13.14" />
+    <PackageReference Include="Blazored.LocalStorage" Version="*" />
+    <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
     <PackageReference Include="MikaelDui.Net.UserAgent" Version="*" />
