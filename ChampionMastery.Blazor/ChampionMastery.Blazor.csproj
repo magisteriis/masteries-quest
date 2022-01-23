@@ -16,6 +16,7 @@
     <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="*" />
     <PackageReference Include="MikaelDui.Net.UserAgent" Version="*" />
     <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
   </ItemGroup>

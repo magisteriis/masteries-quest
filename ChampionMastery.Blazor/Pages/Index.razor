@@ -1,4 +1,7 @@
 ﻿@page "/"
+@page "/{region}"
+@page "/{region}/{summonerName}"
+@inject NavigationManager NavManager
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
@@ -27,6 +30,15 @@ Look up a summoner
 <h3 style="margin-top:36px">Masteries</h3>
 
 <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Champion</th>
+            <th scope="col">Level</th>
+            <th scope="col">Points</th>
+            <th scope="col">Chest</th>
+            <th scope="col">Last Played</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var mastery in _masteries)
         {
@@ -42,12 +54,32 @@ Look up a summoner
 </table>
 
 @code {
+
+    [Parameter]
+    public string? Region { get; set; }
+
+    [Parameter]
+    public string? SummonerName { get; set; }
+
     private SummonerSearch summonerSearch = new();
     private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
 
     protected override async Task OnInitializedAsync()
     {
-        summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
+        if(Region != null)
+        {
+            summonerSearch.Region = (PlatformRoute)Enum.Parse(typeof(PlatformRoute), Region);
+
+            if (SummonerName != null)
+            {
+                summonerSearch.SummonerName = SummonerName;
+                await HandleValidSubmit();
+            }
+        }
+        else
+            summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
+
+        NavManager.LocationChanged += HandleLocationChanged;
     }
 
     private async Task HandleValidSubmit()
@@ -67,5 +99,14 @@ Look up a summoner
             foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
                 _masteries.Add(mastery);
         }
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
     }
 }
