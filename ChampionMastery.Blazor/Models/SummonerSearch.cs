@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampionMastery.Blazor
+namespace ChampionMastery
 {
     public class SummonerSearch
     {
