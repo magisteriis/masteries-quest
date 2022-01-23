@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
 concurrency: 
-  group: gh-pages
+  group: production # gh-pages was taken by gh pages
   cancel-in-progress: true
 jobs:
   deploy-to-github-pages:
