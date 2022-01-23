@@ -33,10 +33,9 @@ Look up a summoner
             <tr>
                 <th>@mastery.ChampionId</th>
                 <td>@mastery.ChampionLevel</td>
-                <td>@mastery.ChampionPoints</td>
+                <td>@mastery.ChampionPoints.ToString("N0")</td>
                 <td>@mastery.ChestGranted</td>
-                <td>@mastery.LastPlayTime</td>
-                <td>@mastery.TokensEarned</td>
+                <td>@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
             </tr>
         }
     </tbody>
