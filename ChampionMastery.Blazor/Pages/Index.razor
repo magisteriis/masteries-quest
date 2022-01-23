@@ -12,6 +12,7 @@ Look up a summoner
     <ValidationSummary />
 
     <InputText id="name" @bind-Value="summonerSearch.SummonerName" />
+    <InputSelectEnum id="region" @bind-Value="summonerSearch.Region" />
 
     <button type="submit">Submit</button>
 </EditForm>
@@ -25,10 +26,10 @@ Look up a summoner
 
     private async Task HandleValidSubmit()
     {
-        if (summonerSearch.SummonerName == null)
+        if (summonerSearch.SummonerName == null || summonerSearch.Region == null)
             return;
 
-        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", Camille.Enums.PlatformRoute.EUW1))
+        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (Camille.Enums.PlatformRoute)summonerSearch.Region))
         {
             var summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
             returnedData = $"{summoner.Name}, {summoner.SummonerLevel}, {summoner.EncryptedPuuid}";

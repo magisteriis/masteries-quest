@@ -1,4 +1,4 @@
-﻿namespace ChampionMastery.Components
+﻿namespace ChampionMastery
 {
     using System;
     using System.ComponentModel.DataAnnotations;
