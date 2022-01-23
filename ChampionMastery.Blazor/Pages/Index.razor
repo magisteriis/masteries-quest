@@ -28,6 +28,6 @@ Look up a summoner
         if (summonerSearch.SummonerName == null)
             return;
 
-        returnedJson = await Http.GetStringAsync($"https://api-riotgames.bolinder.uk/euw/lol/summoner/v4/summoners/by-name/{Uri.EscapeDataString(summonerSearch.SummonerName)}");
+        returnedJson = await Http.GetStringAsync($"https://api-riotgames.bolinder.uk/euw1/lol/summoner/v4/summoners/by-name/{Uri.EscapeDataString(summonerSearch.SummonerName)}");
     }
 }
