@@ -8,11 +8,9 @@
     <PackageProjectUrl>https://github.com/mikaeldui/champion-mastery</PackageProjectUrl>
     <Authors>Mikael Dúi Bolinder</Authors>
     <PackageTags>League of Legends; Champion Mastery</PackageTags>
-    <RootNamespace>ChampionMastery</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
     <PackageReference Include="MikaelDui.Net.UserAgent" Version="*" />

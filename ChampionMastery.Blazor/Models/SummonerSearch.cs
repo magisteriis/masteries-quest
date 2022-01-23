@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampionMastery
+namespace ChampionMastery.Blazor
 {
     public class SummonerSearch
     {
         [Required]
         public string? SummonerName { get; set; }
-
-        [Required]
-        public Camille.Enums.PlatformRoute? Region { get; set; }
     }
 }
