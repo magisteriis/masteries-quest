@@ -1,9 +1,33 @@
 ﻿@page "/"
+@inject HttpClient Http
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Champion Mastery (Blazor)</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Champion Mastery (Blazor)</h1>
 
-Welcome to your new app.
+Look up a summoner
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="summonerSearch.SummonerName" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+<p role="status">Returned JSON: @returnedJson</p>
+
+@code {
+    private string returnedJson = "";
+    private SummonerSearch summonerSearch = new();
+
+    private async Task HandleValidSubmit()
+    {
+        if (summonerSearch.SummonerName == null)
+            return;
+
+        var result = await Http.GetStringAsync($"https://api-riotgames.bolinder.uk/euw/lol/summoner/v4/summoners/by-name/{Uri.EscapeDataString(summonerSearch.SummonerName)}");
+    }
+}
