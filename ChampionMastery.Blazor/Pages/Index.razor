@@ -17,10 +17,10 @@ Look up a summoner
 </EditForm>
 
 
-<p role="status">Returned JSON: @returnedJson</p>
+<p role="status">Returned data: @returnedData</p>
 
 @code {
-    private string returnedJson = "";
+    private string returnedData = "";
     private SummonerSearch summonerSearch = new();
 
     private async Task HandleValidSubmit()
@@ -28,6 +28,10 @@ Look up a summoner
         if (summonerSearch.SummonerName == null)
             return;
 
-        returnedJson = await Http.GetStringAsync($"https://api-riotgames.bolinder.uk/euw1/lol/summoner/v4/summoners/by-name/{Uri.EscapeDataString(summonerSearch.SummonerName)}");
+        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", Camille.Enums.PlatformRoute.EUW1))
+        {
+            var summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
+            returnedData = $"{summoner.Name}, {summoner.SummonerLevel}, {summoner.EncryptedPuuid}";
+        }
     }
 }
