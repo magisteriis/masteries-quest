@@ -43,10 +43,10 @@ Look up a summoner
         @foreach (var mastery in _masteries)
         {
             <tr>
-                <th>@mastery.ChampionId</th>
+                <th>@mastery.ChampionId.ToChampion()</th>
                 <td>@mastery.ChampionLevel</td>
                 <td>@mastery.ChampionPoints.ToString("N0")</td>
-                <td>@mastery.ChestGranted</td>
+                <td>@mastery.ChestGranted.ToUnicode()</td>
                 <td>@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
             </tr>
         }
