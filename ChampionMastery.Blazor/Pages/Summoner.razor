@@ -17,7 +17,8 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="masteries-table" data-order='[[ 2, "desc" ]]' width="100%" cellspacing="0">
+                <table class="table table-bordered" id="masteries-table" data-order='[[ 2, "desc" ]]' 
+                    width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th scope="col">Champion</th>
@@ -40,11 +41,11 @@
                         @foreach (var mastery in _masteries)
                         {
                             <tr>
-                                <th>@mastery.ChampionId.ToChampion()</th>
+                                <td>@mastery.ChampionId.ToChampion()</td>
                                 <td>@mastery.ChampionLevel</td>
                                 <td>@mastery.ChampionPoints.ToString("N0")</td>
                                 <td>@mastery.ChestGranted.ToUnicode()</td>
-                                <td>@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
+                                <td data-order="@mastery.LastPlayTime">@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
                             </tr>
                         }
                     </tbody>
