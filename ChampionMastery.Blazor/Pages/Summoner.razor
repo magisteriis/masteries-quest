@@ -1,0 +1,103 @@
+﻿@page "/{region}/{summonerName}"
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@inject ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
+
+<PageTitle>@SummonerName (@Region) | Champion Mastery (Blazor)</PageTitle>
+
+<h1 class="h3 mb-2 text-gray-800">@SummonerName</h1>
+<p class="mb-4">Below you can see the champion masteries in a table.</p>
+
+@if (@_masteries.Count != 0) 
+{
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Champion Masteries</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="masteries-table" data-order='[[ 2, "desc" ]]' width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Champion</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Chest</th>
+                            <th scope="col">Last Played</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Champion</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Chest</th>
+                            <th scope="col">Last Played</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var mastery in _masteries)
+                        {
+                            <tr>
+                                <th>@mastery.ChampionId.ToChampion()</th>
+                                <td>@mastery.ChampionLevel</td>
+                                <td>@mastery.ChampionPoints.ToString("N0")</td>
+                                <td>@mastery.ChestGranted.ToUnicode()</td>
+                                <td>@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string? Region { get; set; }
+
+    [Parameter]
+    public string? SummonerName { get; set; }
+
+    private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavManager.LocationChanged += HandleLocationChanged;
+        await Search();
+    }
+
+    private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        await Search();
+    }
+
+    private async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(Region) || string.IsNullOrWhiteSpace(SummonerName))
+            NavManager.NavigateTo("/");
+
+        _masteries.Clear();
+
+        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", Enum.Parse<PlatformRoute>(Region)))
+        {
+            var summoner = await localStorage.GetItemAsync<RiotGames.LeagueOfLegends.Summoner>($"{Region}/{SummonerName}");
+
+            if (summoner == null)
+                summoner = await client.GetSummonerByNameAsync(SummonerName);
+
+            var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+            foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
+                _masteries.Add(mastery);
+            await JSRuntime.InvokeVoidAsync("InitDataTable", "#masteries-table");
+        }
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+}

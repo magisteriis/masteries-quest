@@ -1,112 +1,15 @@
 ﻿@page "/"
-@page "/{region}"
-@page "/{region}/{summonerName}"
 @inject NavigationManager NavManager
 @inject HttpClient Http
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Champion Mastery (Blazor)</PageTitle>
 
 <h1>Champion Mastery (Blazor)</h1>
 
-Look up a summoner
-
-<EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="summoner-name">Summoner Name</label>
-            <InputText id="summoner-name" class="form-control" @bind-Value="summonerSearch.SummonerName" />
-        </div>
-        <div class="form-group col-md-6">
-            <label for="summoner-region">Region</label>
-            <InputSelectEnum id="summoner-region" class="form-control" @bind-Value="summonerSearch.Region" />      
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
-
-<h3 style="margin-top:36px">Masteries</h3>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Champion</th>
-            <th scope="col">Level</th>
-            <th scope="col">Points</th>
-            <th scope="col">Chest</th>
-            <th scope="col">Last Played</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var mastery in _masteries)
-        {
-            <tr>
-                <th>@mastery.ChampionId.ToChampion()</th>
-                <td>@mastery.ChampionLevel</td>
-                <td>@mastery.ChampionPoints.ToString("N0")</td>
-                <td>@mastery.ChestGranted.ToUnicode()</td>
-                <td>@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<p class="mb-4">Use the search at the top.</p>
 
 @code {
 
-    [Parameter]
-    public string? Region { get; set; }
-
-    [Parameter]
-    public string? SummonerName { get; set; }
-
-    private SummonerSearch summonerSearch = new();
-    private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        if(Region != null)
-        {
-            summonerSearch.Region = (PlatformRoute)Enum.Parse(typeof(PlatformRoute), Region);
-
-            if (SummonerName != null)
-            {
-                summonerSearch.SummonerName = SummonerName;
-                await HandleValidSubmit();
-            }
-        }
-        else
-            summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
-
-        NavManager.LocationChanged += HandleLocationChanged;
-    }
-
-    private async Task HandleValidSubmit()
-    {
-        if (summonerSearch.SummonerName == null || summonerSearch.Region == null)
-            return;
-
-        _ = localStorage.SetItemAsync("region", summonerSearch.Region);
-
-        _masteries.Clear();
-
-        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (PlatformRoute)summonerSearch.Region))
-        {
-            var summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
-            summonerSearch.SummonerName = summoner.Name;
-            var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-            foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
-                _masteries.Add(mastery);
-        }
-    }
-
-    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-    }
-
-    public void Dispose()
-    {
-        NavManager.LocationChanged -= HandleLocationChanged;
-    }
 }

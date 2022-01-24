@@ -1,17 +1,32 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
         <NavMenu />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://github.com/mikaeldui/champion-mastery" target="_blank">Source Code</a>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <TopBar />
+
+            <!-- Begin Page Content -->
+            <main class="container-fluid">
+                @Body
+            </main>
+            <!-- /.container-fluid -->
+
         </div>
+        <!-- End of Main Content -->
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Mikael Dúi Bolinder @DateTime.Now.Year | <a href="https://github.com/mikaeldui/champion-mastery" target="_blank">Source Code</a></span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
