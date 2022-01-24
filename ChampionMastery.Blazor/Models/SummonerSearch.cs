@@ -8,6 +8,6 @@ namespace ChampionMastery
         public string? SummonerName { get; set; }
 
         [Required]
-        public Camille.Enums.PlatformRoute? Region { get; set; }
+        public Camille.Enums.PlatformRoute? Region { get; set; } = Camille.Enums.PlatformRoute.NA1;
     }
 }
