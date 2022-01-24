@@ -212,6 +212,11 @@
 @code {
     private SummonerSearch summonerSearch = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
+    }
+
     private async Task HandleValidSubmit()
     {
         if (summonerSearch.SummonerName == null || summonerSearch.Region == null)
