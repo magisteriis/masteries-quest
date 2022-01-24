@@ -73,6 +73,7 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        _masteries.Clear();
         await Search();
     }
 
