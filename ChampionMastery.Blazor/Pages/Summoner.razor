@@ -74,6 +74,7 @@
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         _masteries.Clear();
+        base.StateHasChanged();
         await Search();
     }
 
@@ -94,6 +95,7 @@
             var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
             foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
                 _masteries.Add(mastery);
+            base.StateHasChanged();
             await JSRuntime.InvokeVoidAsync("InitDataTable", "#masteries-table");
         }
     }
