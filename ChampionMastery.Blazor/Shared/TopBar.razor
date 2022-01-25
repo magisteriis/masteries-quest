@@ -14,10 +14,13 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="input-group">
-            <InputText id="summoner-name" class="form-control" aria-label="Search" aria-describedby="basic-addon2"
+            <div class="input-group-prepend">
+                <InputSelectEnum name="summoner-region" class="form-control" 
+                    style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
+                    @bind-Value="summonerSearch.Region" DisplayName="Region"/>
+            </div>
+            <InputText name="summoner-name" class="form-control" aria-label="Search" aria-describedby="basic-addon2"
                 @bind-Value="summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
-            <InputSelectEnum id="summoner-region" class="form-control" 
-                @bind-Value="summonerSearch.Region" DisplayName="Region"/>
             <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search fa-sm"></i>
@@ -35,21 +38,28 @@
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
             </a>
-            <!-- Dropdown - Messages -->
+            <!-- Dropdown - Search -->
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                 aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
+                <EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit"
+                    class="form-inline mr-auto w-100 navbar-search">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small"
-                            placeholder="Search for..." aria-label="Search"
-                            aria-describedby="basic-addon2">
+                        <div class="input-group-prepend">
+                            <InputSelectEnum name="summoner-region" class="form-control bg-light border-0 small" 
+                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
+                                @bind-Value="summonerSearch.Region" DisplayName="Region"/>
+                        </div>
+                        <InputText name="summoner-name" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"
+                            @bind-Value="summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
                     </div>
-                </form>
+                </EditForm>
             </div>
         </li>
 
@@ -214,27 +224,28 @@
 
     protected override async Task OnInitializedAsync()
     {
-        summonerSearch.Region = await localStorage.GetItemAsync<PlatformRoute?>("region");
+        var savedRegion = await localStorage.GetItemAsync<PlatformRoute?>("region");
+        if (savedRegion != null)
+            summonerSearch.Region = (PlatformRoute)savedRegion;
     }
 
     private async Task HandleValidSubmit()
     {
-        if (summonerSearch.SummonerName == null || summonerSearch.Region == null)
+        if (summonerSearch.SummonerName == null)
             return;
 
         _ = localStorage.SetItemAsync("region", summonerSearch.Region);
 
-        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (PlatformRoute)summonerSearch.Region))
-        {
-            var summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
-            summonerSearch.SummonerName = summoner.Name;
+        var summoner = await localStorage.GetSummonerAsync(summonerSearch.Region, summonerSearch.SummonerName);
 
-            var summonerKey = $"{summonerSearch.Region}/{summonerSearch.SummonerName}";
+        if (summoner == null)
+            using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", (PlatformRoute)summonerSearch.Region))
+            {
+                summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
+                await localStorage.SetSummonerAsync(summonerSearch.Region, summoner);
+            }
 
-            await localStorage.SetItemAsync(summonerKey, summoner);
-
-            NavManager.NavigateTo($"{summonerSearch.Region}/{summonerSearch.SummonerName}");
-            summonerSearch.SummonerName = null;
-        }
+        NavManager.NavigateTo($"{summonerSearch.Region}/{summoner.Name}");
+        summonerSearch.SummonerName = null;
     }
 }

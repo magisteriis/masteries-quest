@@ -58,10 +58,10 @@
 @code {
 
     [Parameter]
-    public string? Region { get; set; }
+    public string Region { get; set; }
 
     [Parameter]
-    public string? SummonerName { get; set; }
+    public string SummonerName { get; set; }
 
     private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
 
@@ -85,12 +85,17 @@
 
         _masteries.Clear();
 
-        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", Enum.Parse<PlatformRoute>(Region)))
+        var region = Enum.Parse<PlatformRoute>(Region);
+
+        using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", region))
         {
-            var summoner = await localStorage.GetItemAsync<RiotGames.LeagueOfLegends.Summoner>($"{Region}/{SummonerName}");
+            var summoner = await localStorage.GetSummonerAsync(region, SummonerName);
 
             if (summoner == null)
+            {
                 summoner = await client.GetSummonerByNameAsync(SummonerName);
+                await localStorage.SetSummonerAsync(region, summoner);
+            }
 
             var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
             foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
