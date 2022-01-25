@@ -41,7 +41,7 @@
                         @foreach (var mastery in _masteries)
                         {
                             <tr>
-                                <td>@mastery.ChampionId.ToChampion()</td>
+                                <th>@mastery.ChampionId.ToChampion()</th>
                                 <td>@mastery.ChampionLevel</td>
                                 <td>@mastery.ChampionPoints.ToString("N0")</td>
                                 <td>@mastery.ChestGranted.ToUnicode()</td>
