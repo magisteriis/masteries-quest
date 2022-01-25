@@ -234,6 +234,7 @@
             await localStorage.SetItemAsync(summonerKey, summoner);
 
             NavManager.NavigateTo($"{summonerSearch.Region}/{summonerSearch.SummonerName}");
+            summonerSearch.SummonerName = null;
         }
     }
 }
