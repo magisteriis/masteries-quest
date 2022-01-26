@@ -3,13 +3,78 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
+@using RiotGames.LeagueOfLegends
 
-<PageTitle>Champion Mastery (Blazor)</PageTitle>
+<PageTitle>Masteries Quest</PageTitle>
 
-<h1>Champion Mastery (Blazor)</h1>
+<h1>Masteries Quest</h1>
 
-<p class="mb-4">Use the search at the top.</p>
+<p class="mb-4">Use the search at the top to look up a summoners champion masteries.</p>
+
+<div class="card text-center">
+  <div class="card-header">
+    Featured Games
+  </div>
+  <div class="card-body">
+        <div class="card-columns">
+            @foreach(var game in _featuredGames)
+            {
+                <div class="card">
+                    <div class="card-header">@game.GameMode</div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            @foreach(var participant in game.Participants)
+                            {
+                                var link = $"/{game.PlatformId}/{participant.SummonerName}";
+                                <a href="@link" class="list-group-item list-group-item-action">
+                                    @if (_masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
+                                    {
+                                        <span class="badge badge-primary badge-pill">@championPoints points</span>
+                                    }
+                                    @participant.SummonerName
+                                </a>                        
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+  </div>
+</div>
+
 
 @code {
+    Dictionary<(string region, string summonerName), int> _masteryPoints = new Dictionary<(string region, string summonerName), int>();
 
+    LeagueOfLegendsReadOnlyCollection<SpectatorFeaturedGameInfo> _featuredGames = new LeagueOfLegendsReadOnlyCollection<SpectatorFeaturedGameInfo>(new SpectatorFeaturedGameInfo[0]);
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var client = new LeagueOfLegendsClient("github", PlatformRoute.EUW1))
+        {
+            var featuredGames = await client.GetSpectatorFeaturedGamesAsync();
+            _featuredGames = featuredGames.GameList;
+        }
+
+        _ = Task.Run(async () =>
+        {
+            foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId))
+            {
+                using (var client = new LeagueOfLegendsClient("github", Enum.Parse<PlatformRoute>(platformGames.Key)))
+                {
+                    foreach (var participant in platformGames.SelectMany(g => g.Participants))
+                    {
+                        var summoner = await client.GetSummonerByNameAsync(participant.SummonerName);
+                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
+                        _masteryPoints.Add((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+
+                        base.StateHasChanged();
+
+                        await Task.Delay(500);
+                    }
+                }
+            }
+        });
+    }
 }
