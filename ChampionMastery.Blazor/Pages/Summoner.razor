@@ -3,13 +3,14 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
+@using RiotGames.LeagueOfLegends
 
-<PageTitle>@SummonerName (@Region) | Champion Mastery (Blazor)</PageTitle>
+<PageTitle>@SummonerName (@Region) | Mastery Quest 🏆</PageTitle>
 
 <h1 class="h3 mb-2 text-gray-800">@SummonerName (@Region)</h1>
 <p class="mb-4">Level: @SummonerLevel</p>
 
-@if (@_masteries.Any()) 
+@if (@masteries != null) 
 {
     <div class="row animated--grow-in">
         <div class="col-xl-3 col-md-6 mb-4">
@@ -117,7 +118,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach (var mastery in _masteries)
+                        @foreach (var mastery in masteries)
                         {
                             <tr>
                                 <th>@mastery.ChampionId.ToChampion()</th>
@@ -151,7 +152,7 @@
 
     public int? ChampionsMastered;
 
-    private List<RiotGames.LeagueOfLegends.ChampionMastery> _masteries = new List<RiotGames.LeagueOfLegends.ChampionMastery>();
+    private LeagueOfLegendsReadOnlyCollection<ChampionMastery>? masteries;
 
     protected override async Task OnInitializedAsync()
     {
@@ -161,7 +162,7 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        _masteries.Clear();
+        masteries = null;
         SummonerLevel = null;
         ChampionsPlayed = null;
         ChampionPointsTotal = null;
@@ -179,7 +180,7 @@
             return;
         }
 
-        _masteries.Clear();
+        masteries = null;
 
         var region = Enum.Parse<PlatformRoute>(Region);
 
@@ -195,9 +196,8 @@
 
             SummonerLevel = (int)summoner.SummonerLevel;
 
-            var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-            foreach (var mastery in masteries.OrderByDescending(m => m.ChampionPoints))
-                _masteries.Add(mastery);
+            masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
             ChampionsPlayed = masteries.Count;
             ChampionPointsTotal = masteries.Sum(m => m.ChampionPoints);
             ChampionPointsMax = masteries.Max(m => m.ChampionPoints);
@@ -205,7 +205,6 @@
 
             base.StateHasChanged();
             await JSRuntime.InvokeVoidAsync("InitDataTable", "#masteries-table");
-
         }
     }
 
