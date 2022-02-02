@@ -44,7 +44,6 @@ namespace MasteriesQuest.Pages
 
                 DispatcherQueue.TryEnqueue(() =>
                 {
-                    SummonerGrid.Visibility = Visibility.Visible;
                     Summoner.Populate(summoner);
                 });
 
@@ -52,6 +51,7 @@ namespace MasteriesQuest.Pages
                 DispatcherQueue.TryEnqueue(() =>
                 {
                     Summoner.Populate(masteries);
+                    SummonerGrid.Visibility = Visibility.Visible;
                     LoadingControl.IsLoading = false;
                 });
             }

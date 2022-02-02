@@ -10,8 +10,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="12">
-        <Grid x:Name="SummonerGrid" Visibility="Collapsed">
+    <Grid>
+        <Grid x:Name="SummonerGrid" Padding="12" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
