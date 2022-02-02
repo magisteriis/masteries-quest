@@ -11,14 +11,18 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">            
-            <TextBlock x:Name="SummonerNameTextBlock" Text="{x:Bind Summoner.Name, Mode=OneWay}" />
-        </StackPanel>
+        <Grid x:Name="SummonerGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <controls:MasteriesGrid Grid.Row="1" MasteriesSource="{x:Bind Summoner.Masteries}" />
+            <StackPanel Grid.Row="0">
+                <TextBlock x:Name="SummonerNameTextBlock" Text="{x:Bind Summoner.Name, Mode=OneWay}" Style="{StaticResource HeaderTextBlockStyle}" />
+            </StackPanel>
+
+            <controls:MasteriesGrid Grid.Row="1" MasteriesSource="{x:Bind Summoner.Masteries}" />
+        </Grid>
+        <controls:Error x:Name="SummonerNotFoundError" Visibility="Collapsed" />
     </Grid>
 </Page>

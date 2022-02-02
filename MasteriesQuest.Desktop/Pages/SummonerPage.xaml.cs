@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -41,10 +42,18 @@ namespace MasteriesQuest.Pages
                 using LeagueOfLegendsClient client = new("desktop", Server.EUW);
                 var summoner = await client.GetSummonerByNameAsync(summonerName);
 
-                DispatcherQueue.TryEnqueue(() => Summoner.Populate(summoner));
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    SummonerGrid.Visibility = Visibility.Visible;
+                    Summoner.Populate(summoner);
+                });
 
                 var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
                 DispatcherQueue.TryEnqueue(() => Summoner.Populate(masteries));
+            }
+            catch (HttpRequestException ex)
+            {
+                SummonerNotFoundError.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
