@@ -10,22 +10,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Padding="12">
         <Grid x:Name="SummonerGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-
             <StackPanel Grid.Row="0">
                 <TextBlock x:Name="SummonerNameTextBlock" Text="{x:Bind Summoner.Name, Mode=OneWay}" Style="{StaticResource HeaderTextBlockStyle}" />
             </StackPanel>
-
             <controls:MasteriesGrid Grid.Row="1" Margin="0,12,0,0" MasteriesSource="{x:Bind Summoner.Masteries}" />
         </Grid>
         <ct:Loading x:Name="LoadingControl" IsLoading="True">
             <ct:Loading.Background>
-                <AcrylicBrush TintColor="MidnightBlue" TintOpacity="0.4" />
+                <AcrylicBrush TintColor="Navy" TintOpacity="0.4" />
             </ct:Loading.Background>
             <StackPanel Orientation="Horizontal" Padding="12">
                 <ProgressRing IsActive="True" Margin="0,0,12,0" Foreground="White" />
