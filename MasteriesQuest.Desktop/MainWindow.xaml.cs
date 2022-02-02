@@ -27,6 +27,10 @@ namespace MasteriesQuest
         public MainWindow()
         {
             this.InitializeComponent();
+            this.Title = "The Masteries Quest";
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(AppTitleBar);
+            //this.SetWindowIcon("MasteriesQuest.ico");
         }
 
         private void MainNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

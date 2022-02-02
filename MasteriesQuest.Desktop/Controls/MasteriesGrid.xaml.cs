@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using RiotGames.LeagueOfLegends;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,5 +37,35 @@ namespace MasteriesQuest.Controls
         // Using a DependencyProperty as the backing store for MasteriesSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MasteriesSourceProperty =
             DependencyProperty.Register("MasteriesSource", typeof(IEnumerable), typeof(MasteriesGrid), new PropertyMetadata(0));
+
+        private void MasteriesDataGrid_AutoGeneratingColumn(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
+        {
+            switch (e.Column.Header.ToString())
+            {
+                case nameof(ChampionMastery.ChestGranted):
+                    e.Column.Header = "Chest";
+                    break;
+
+                case nameof(ChampionMastery.ChampionId):
+                    e.Column.Header = "Champion";
+                    break;
+
+                case nameof(ChampionMastery.LastPlayTime):
+                    e.Column.Header = "Last Played";
+                    break;
+
+                case nameof(ChampionMastery.ChampionLevel):
+                    e.Column.Header = "Level";
+                    break;
+
+                case nameof(ChampionMastery.ChampionPoints):
+                    e.Column.Header = "Points";
+                    break;
+
+                default:
+                    e.Cancel = true;
+                    break;
+            }
+        }
     }
 }

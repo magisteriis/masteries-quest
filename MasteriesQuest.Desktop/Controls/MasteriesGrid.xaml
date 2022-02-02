@@ -8,5 +8,5 @@
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d">
 
-    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{Binding MasteriesSource}" IsReadOnly="True" />
+    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{Binding MasteriesSource}" IsReadOnly="True" AutoGeneratingColumn="MasteriesDataGrid_AutoGeneratingColumn" />
 </UserControl>
