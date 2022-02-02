@@ -1,0 +1,50 @@
+﻿@using System.Text.Json
+@inject HttpClient Http
+@inject NavigationManager NavManager
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>
+                Copyright &copy; The Masteries Quest @DateTime.Now.Year | 
+                <a href="https://github.com/magisteriis/masteries-quest-web" target="_blank">GitHub</a> | 
+                Powered by 
+                    <a href="https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor" title="Blazor - Build client web apps with C# 🧑🏻‍💻">Blazor WebAssembly</a> and 
+                    <a href="https://workers.cloudflare.com/" title="@CfDataCenterMessage 🚀">Cloudflare Workers</a></span>
+        </div>
+        <div class="copyright text-center my-auto" style="padding-top:12px"><span><b>The Masteries Quest</b> isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
+@code {
+    private string? CfDataCenterMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get the Cloudflare data center just for fun.
+
+        if (NavManager.Uri.StartsWith("https://masteries.quest"))
+            try
+            {
+                var cloudflareTask = Http.GetStringAsync("/cdn-cgi/trace?load=0");
+                var iataTask = Http.GetStreamAsync("/iata.json");
+
+                await Task.WhenAll(cloudflareTask, iataTask);
+
+                var colo = cloudflareTask.Result.Split("\n").Single(t => t.StartsWith("colo=")).Split('=').Last();
+                string dataCenter;
+                using (var jsonDocument = JsonDocument.Parse(iataTask.Result))
+                {
+                    dataCenter = jsonDocument.RootElement.GetProperty(colo).GetString() ?? throw new Exception("Datacenter code not found.");
+                }
+
+                CfDataCenterMessage = $"You're connected to Cloudflare's {dataCenter} data center.";
+            }
+            catch
+            {
+                // Do nothing. This is just for fun.
+            }
+    }
+}

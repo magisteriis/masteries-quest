@@ -1,0 +1,145 @@
+﻿@page "/"
+@page "/{serverAbbrevation}"
+@implements IDisposable
+@inject NavigationManager NavManager
+@inject ILocalStorageService localStorage
+@using RiotGames.LeagueOfLegends
+
+<PageTitle>The Masteries Quest 🏆</PageTitle>
+
+<h1>The Masteries Quest 🏆</h1>
+
+<p class="mb-4">Use the search at the top to look up a summoners champion masteries.</p>
+
+@if (_featuredGames != null)
+{
+    <div class="card text-center animated--grow-in">
+        <h2 class="card-header">
+            Featured Games
+        </h2>
+        <div class="card-body">
+            <div class="card-columns">
+                @foreach (var game in _featuredGames)
+                {
+                    var matchLink = $"/{ServerAbbrevation}/matches/{game.GameId}/{string.Join(',', game.Participants.GroupBy(p => p.TeamId).First().Select(p => Uri.EscapeDataString(p.SummonerName)))}";
+                    <div class="card">
+                        <h3 class="card-header"><a href="@matchLink">@game.GameMode</a></h3>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var teamId in game.Participants.Select(p => p.TeamId).Distinct())
+                                {
+                                    bool blueTeam = teamId == game.Participants.Select(p => p.TeamId).First();
+                                    string backgroundColor = blueTeam ? "rgba(0, 34, 89)" : "rgba(89, 0, 0)";
+                                    <div class="list-group col p-0" style="border-top: .25rem solid @backgroundColor">
+                                        @foreach (var participant in game.Participants.Where(p => p.TeamId == teamId))
+                                        {
+                                            Server.TryParse(game.PlatformId, out var server);
+                                            var link = $"/{server.Abbreviation.ToLower()}/{participant.SummonerName}";
+                                            <a href="@link" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                @if(!blueTeam) 
+                                                    @participant.SummonerName
+
+                                                @if (_masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
+                                                {
+                                                    <span class="badge badge-primary badge-pill">@championPoints.ToString("N0") pts</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary badge-pill">Loading...</span>
+                                                }
+                                                
+                                                @if(blueTeam) 
+                                                    @participant.SummonerName
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+
+    [Parameter]
+    public string? ServerAbbrevation { get; set; }
+
+    private CancellationTokenSource _loadFeaturedGamesCancellationToken = new CancellationTokenSource();
+
+    Dictionary<(string region, string summonerName), int> _masteryPoints = new Dictionary<(string region, string summonerName), int>();
+
+    LeagueOfLegendsReadOnlyCollection<SpectatorFeaturedGameInfo>? _featuredGames;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ServerAbbrevation == null)
+        {
+            var savedPlatform = await localStorage.GetItemAsync<PlatformRoute?>("region");
+            NavManager.NavigateTo(savedPlatform ?? Server.NA);
+            return;
+        }
+        else if (Server.TryParse(ServerAbbrevation, out var server))
+        {
+            if (ServerAbbrevation != server.Abbreviation.ToLower())
+            {
+                NavManager.NavigateTo(server);
+                return;
+            }
+            else
+                await LoadFeaturedGamesAsync(server);
+        }
+        else
+            NavManager.NavigateTo(Server.NA);
+    }
+
+    private async Task LoadFeaturedGamesAsync(Server server)
+    {
+        try
+        {
+            using (var client = new LeagueOfLegendsClient("github", server))
+            {
+                var featuredGames = await client.GetSpectatorFeaturedGamesAsync(_loadFeaturedGamesCancellationToken.Token);
+                _featuredGames = featuredGames.GameList;
+            }
+
+            // TODO: Maybe Task.Run isn't needed.
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId)) // While on dev token
+                    {
+                        _loadFeaturedGamesCancellationToken.Token.ThrowIfCancellationRequested();
+                        using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
+                        {
+                            foreach (var participant in platformGames.SelectMany(g => g.Participants))
+                            {
+                                var summoner = await client.GetSummonerByNameAsync(participant.SummonerName, _loadFeaturedGamesCancellationToken.Token);
+                                var masteries = await client.GetChampionMasteriesAsync(summoner.Id, _loadFeaturedGamesCancellationToken.Token);
+
+                                _masteryPoints.Add((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+
+                                base.StateHasChanged();
+
+                                await Task.Delay(500, _loadFeaturedGamesCancellationToken.Token); // While on dev token
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }, _loadFeaturedGamesCancellationToken.Token);
+        }
+        catch { }
+    }
+
+    public void Dispose()
+    {
+        _loadFeaturedGamesCancellationToken.Cancel();
+        _loadFeaturedGamesCancellationToken.Dispose();
+    }
+}

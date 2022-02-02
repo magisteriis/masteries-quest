@@ -1,0 +1,209 @@
+﻿@page "/{serverAbbrevation}/{summonerName}"
+@inject NavigationManager NavManager
+@inject ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
+@using RiotGames.LeagueOfLegends
+
+<PageTitle>@SummonerName (@ServerAbbrevation?.ToUpper()) | The Masteries Quest 🏆</PageTitle>
+
+<h1 class="h3 mb-2 text-gray-800">@SummonerName (@ServerAbbrevation?.ToUpper())</h1>
+<p class="mb-4">Level: @SummonerLevel</p>
+
+@if (@masteries != null) 
+{
+    <div class="row animated--grow-in">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Champions (Played)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ChampionsPlayed champions</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Champion Points (Total)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ChampionPointsTotal?.ToString("N0") points</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Champion Points (Max)
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ChampionPointsMax?.ToString("N0") points</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Champions Mastered (Level 7)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ChampionsMastered champions</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4 animated--grow-in">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Champion Masteries</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="masteries-table" data-order='[[ 2, "desc" ]]' 
+                    width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Champion</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Chest</th>
+                            <th scope="col">Last Played</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Champion</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Chest</th>
+                            <th scope="col">Last Played</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var mastery in masteries)
+                        {
+                            <tr>
+                                <th>@mastery.ChampionId.ToChampion()</th>
+                                <td>@mastery.ChampionLevel</td>
+                                <td>@mastery.ChampionPoints.ToString("N0")</td>
+                                <td>@mastery.ChestGranted.ToUnicode()</td>
+                                <td data-order="@mastery.LastPlayTime">@TimeHelper.JavaTimeStampToDateTime(mastery.LastPlayTime).Humanize()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? ServerAbbrevation { get; set; }
+
+    [Parameter]
+    public string? SummonerName { get; set; }
+
+    public int? SummonerLevel;
+
+    public int? ChampionsPlayed;
+
+    public int? ChampionPointsTotal;
+
+    public int? ChampionPointsMax;
+
+    public int? ChampionsMastered;
+
+    private LeagueOfLegendsReadOnlyCollection<ChampionMastery>? masteries;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        masteries = null;
+        SummonerLevel = null;
+        ChampionsPlayed = null;
+        ChampionPointsTotal = null;
+        ChampionPointsMax = null;
+        ChampionsMastered = null;
+        await Search();
+    }
+
+    private async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(ServerAbbrevation) || string.IsNullOrWhiteSpace(SummonerName))
+        {
+            NavManager.NavigateTo("/", replace: true);
+            return;
+        }
+
+        masteries = null;
+
+        if (!Server.TryParse(ServerAbbrevation, out var server))
+            throw new FormatException("Server name doesn't have a valid format.");
+
+        using (LeagueOfLegendsClient client = new("github", server))
+        {
+            var summoner = await localStorage.GetSummonerAsync(server, SummonerName);
+
+            if (summoner == null)
+            {
+                summoner = await client.GetSummonerByNameAsync(SummonerName);
+                await localStorage.SetSummonerAsync(server, summoner);
+            }
+
+            if (SummonerName != summoner.Name || ServerAbbrevation != server.Abbreviation.ToLower())
+            {
+                NavManager.NavigateTo(server, summoner, replace: true);
+                return;
+            }
+
+            SummonerLevel = (int)summoner.SummonerLevel;
+
+            masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
+            ChampionsPlayed = masteries.Count;
+            ChampionPointsTotal = masteries.Sum(m => m.ChampionPoints);
+            ChampionPointsMax = masteries.Max(m => m.ChampionPoints);
+            ChampionsMastered = masteries.Count(m => m.ChampionLevel == 7);
+
+            base.StateHasChanged();
+            await JSRuntime.InvokeVoidAsync("InitDataTable", "#masteries-table");
+        }
+    }
+}

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/mikaeldui/champion-mastery</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mikaeldui/champion-mastery</PackageProjectUrl>
+    <Authors>Mikael Dúi Bolinder</Authors>
+    <PackageTags>League of Legends; Champion Mastery</PackageTags>
+    <RootNamespace>MasteriesQuest</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="*" />
+    <PackageReference Include="Humanizer.Core" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="*" />
+    <PackageReference Include="MikaelDui.Net.UserAgent" Version="*" />
+    <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
+  </ItemGroup>
+
+</Project>

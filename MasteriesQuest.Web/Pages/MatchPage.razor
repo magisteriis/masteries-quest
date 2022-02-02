@@ -1,0 +1,138 @@
+﻿@page "/{serverAbbrevation}/matches/{matchId:long}" // Match in past
+@page "/{serverAbbrevation}/matches/{matchId:long}/{summonerNames}" // Active match
+@page "/{serverAbbrevation}/matches/{summonerNames}" // Champ select
+@inject NavigationManager NavManager
+@inject ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
+@using RiotGames.LeagueOfLegends
+@using System.Text.Json
+
+<h3>Match (alpha)</h3>
+
+@if(_summoners != null)
+{
+    <div class="row">
+        @foreach(var summoner in _summoners)
+        {
+            <p>@JsonSerializer.Serialize(summoner)</p>
+        }
+    </div>
+}
+
+<p>@_somethingElse</p>
+
+@code {
+    [Parameter]
+    public string? ServerAbbrevation { get; set; }
+
+    [Parameter]
+    public long? MatchId { get; set; }
+
+    [Parameter]
+    public string? SummonerNames { get; set; }
+
+    private List<Summoner>? _summoners { get; set; }
+
+    private string? _somethingElse { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ServerAbbrevation == null || !Server.TryParse(ServerAbbrevation, out var server))
+            throw new FormatException("Server name doesn't have a valid format.");
+
+        if (MatchId == null)
+        {
+            if (SummonerNames == null)
+            {
+                NavManager.NavigateTo("/"); 
+                return;
+            }
+
+            // Use SummonerNames
+            var summonerNames = SummonerNames.Split(',');
+
+            using(LeagueOfLegendsClient client = new LeagueOfLegendsClient("github", server))
+            {
+                // Check if there's a live gime, for now
+                var summoner = await localStorage.GetSummonerAsync(server, summonerNames[0]);
+                if (summoner == null)
+                    summoner = await client.GetSummonerByNameAsync(summonerNames[0]);
+
+                try
+                {
+                    var activeGame = await client.GetSpectatorActiveGameAsync(summoner.Id);
+                    NavManager.NavigateTo(server, activeGame, summoner, replace: true);
+                    return;
+                }
+                catch
+                {
+                    // List summoners only. Probably champ select. Could also be a match in the past, maybe check the match history?
+                    // But, if someone left champ select...
+                    _summoners = new List<Summoner>();
+                    _summoners.Add(summoner);
+                    _summoners.AddRange(await Task.WhenAll(summonerNames.Skip(1).Select(s => Task.Run(async () => await localStorage.GetSummonerAsync(server, s) ?? await client.GetSummonerByNameAsync(s)))));
+                    //StateHasChanged();
+                }
+            }
+        }
+        else
+        {
+            if (SummonerNames == null)
+            {
+                // Should be a match in past with the current API's?
+                try
+                {
+                    using (LeagueOfLegendsClient client = new LeagueOfLegendsClient("github", server))
+                    {
+                        var match = await client.GetMatchAsync(server, (long)MatchId);
+                        // Update teams
+
+                        //var summonerIds = match.Info.Participants.Select(p => p.EncryptedSummonerId);
+                        //var summoners = await Task.WhenAll(summonerIds.Select(si => client.GetSummonerAsync(si)));
+                        // Update teams
+
+                        _somethingElse = JsonSerializer.Serialize(match);
+                    }
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Unable to get match!", ex);
+                }                
+            }
+            else
+            {
+                // Could be an active match or a match in the past.
+                var summonerNames = SummonerNames.Split(',');
+                var summoner = await localStorage.GetSummonerAsync(server, summonerNames[0]);
+
+                using (LeagueOfLegendsClient client = new LeagueOfLegendsClient("github", server))
+                {
+                    if (summoner == null)
+                        summoner = await client.GetSummonerByNameAsync(summonerNames[0]);
+                    try
+                    {
+                        var activeGame = await client.GetSpectatorActiveGameAsync(summoner);    
+                        if (activeGame.GameId != MatchId)
+                            throw new Exception("The match seems to be in the past.");                        
+                            
+                        _somethingElse = JsonSerializer.Serialize(activeGame);
+                        // Update teams
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            var match = await client.GetMatchAsync(server, (long)MatchId);
+                            NavManager.NavigateTo(server, match, replace: true);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("The match ID doesn't seem to be neither an active match nor a mathc in the past.", ex);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
