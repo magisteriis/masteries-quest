@@ -7,12 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <NavigationView x:Name="nvSample">
+    <NavigationView x:Name="MainNavigationView" SelectionChanged="MainNavigationView_SelectionChanged" Background="MidnightBlue">
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
+        </NavigationView.AutoSuggestBox>
+        
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage" />
+            <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage" IsSelected="True" />
             <NavigationViewItem Icon="World" Content="Highscores" Tag="HighscoresPage" />
-            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
-            <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame"/>
     </NavigationView>

@@ -19,9 +19,11 @@
     <RepositoryUrl>https://github.com/mikaeldui/masteries-quest-desktop</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\MasteriesGrid.xaml" />
     <None Remove="Pages\HighscoresPage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
     <None Remove="Pages\MatchPage.xaml" />
+    <None Remove="Pages\SettingsPage.xaml" />
     <None Remove="Pages\SummonerPage.xaml" />
   </ItemGroup>
 
@@ -36,9 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
-    <PackageReference Include="MikaelDui.RiotGames.Client" Version="12.2.1.286" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="*" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
+    <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -69,6 +74,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Page Update="Controls\MasteriesGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
 </Project>

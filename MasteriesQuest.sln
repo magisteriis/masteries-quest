@@ -19,6 +19,8 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MasteriesQuest.Shared\MasteriesQuest.Shared.projitems*{416903be-8f11-4b48-a4c3-40c8bb9b9cd9}*SharedItemsImports = 13
+		MasteriesQuest.Shared\MasteriesQuest.Shared.projitems*{448cde09-1f63-4d34-a1bf-846f72aeaec8}*SharedItemsImports = 5
+		MasteriesQuest.Shared\MasteriesQuest.Shared.projitems*{75b2cfee-d1ac-4dba-a736-84199cd23336}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

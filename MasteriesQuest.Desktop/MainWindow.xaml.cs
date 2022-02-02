@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MasteriesQuest.Pages;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -26,6 +27,35 @@ namespace MasteriesQuest
         public MainWindow()
         {
             this.InitializeComponent();
+        }
+
+        private void MainNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                contentFrame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                var selectedItem = (NavigationViewItem)args.SelectedItem;
+                if (selectedItem != null)
+                {
+                    string selectedItemTag = ((string)selectedItem.Tag);
+                    string pageName = "MasteriesQuest.Pages." + selectedItemTag;
+                    Type pageType = Type.GetType(pageName);
+                    contentFrame.Navigate(pageType);
+                }
+            }
+        }
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            // TODO: Suggest past summoner and maybe lookup the current text to correct capitalization etc.
+        }
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
         }
     }
 }

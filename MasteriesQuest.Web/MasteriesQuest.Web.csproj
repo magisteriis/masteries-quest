@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
@@ -20,5 +21,7 @@
     <PackageReference Include="MikaelDui.Net.UserAgent" Version="*" />
     <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
   </ItemGroup>
+
+  <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
 
 </Project>

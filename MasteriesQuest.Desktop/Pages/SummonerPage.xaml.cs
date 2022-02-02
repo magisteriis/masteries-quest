@@ -1,10 +1,12 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MasteriesQuest.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using RiotGames.LeagueOfLegends;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +28,28 @@ namespace MasteriesQuest.Pages
         public SummonerPage()
         {
             this.InitializeComponent();
+        }
+
+        public SummonerViewModel Summoner { get; set; } = new SummonerViewModel();
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            try
+            {
+                var summonerName = e.Parameter as string;
+
+                using LeagueOfLegendsClient client = new("desktop", Server.EUW);
+                var summoner = await client.GetSummonerByNameAsync(summonerName);
+
+                DispatcherQueue.TryEnqueue(() => Summoner.Populate(summoner));
+
+                var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+                DispatcherQueue.TryEnqueue(() => Summoner.Populate(masteries));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
