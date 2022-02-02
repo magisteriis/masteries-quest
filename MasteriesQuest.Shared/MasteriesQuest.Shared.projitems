@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ChampionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\LolClientExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
   </ItemGroup>

@@ -49,15 +49,21 @@ namespace MasteriesQuest.Pages
                 });
 
                 var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-                DispatcherQueue.TryEnqueue(() => Summoner.Populate(masteries));
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    Summoner.Populate(masteries);
+                    LoadingControl.IsLoading = false;
+                });
             }
             catch (HttpRequestException ex)
             {
+                LoadingControl.IsLoading = false;
                 SummonerNotFoundError.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
-
+                LoadingControl.IsLoading = false;
+                SummonerNotFoundError.Visibility = Visibility.Visible;
             }
         }
     }

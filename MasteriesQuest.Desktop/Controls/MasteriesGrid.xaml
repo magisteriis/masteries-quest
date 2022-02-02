@@ -6,7 +6,35 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:lol="using:RiotGames.LeagueOfLegends"
     mc:Ignorable="d">
 
-    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{Binding MasteriesSource}" IsReadOnly="True" AutoGeneratingColumn="MasteriesDataGrid_AutoGeneratingColumn" />
+    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{x:Bind MasteriesSource, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False">
+        <ct:DataGrid.Columns>
+            <ct:DataGridTextColumn 
+                Header="Champion" 
+                Width="SizeToCells"
+                Binding="{Binding Champion}" 
+                FontSize="20" />
+            <ct:DataGridTextColumn 
+                Header="Level" 
+                Width="SizeToCells"
+                Binding="{Binding Level}" 
+                FontSize="20" />
+            <ct:DataGridTextColumn 
+                Header="Points" 
+                Width="SizeToCells"
+                Binding="{Binding Points}" 
+                FontSize="20" />
+            <ct:DataGridCheckBoxColumn 
+                Header="Chest" 
+                Width="SizeToCells"
+                Binding="{Binding IsChestGranted}" />
+            <ct:DataGridTextColumn 
+                Header="Last Played" 
+                Width="SizeToCells"
+                Binding="{Binding LastPlayed}" 
+                FontSize="20" />
+        </ct:DataGrid.Columns> 
+    </ct:DataGrid>
 </UserControl>

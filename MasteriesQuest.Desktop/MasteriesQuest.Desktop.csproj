@@ -43,6 +43,8 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Media" Version="*" />
+    <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
     <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />

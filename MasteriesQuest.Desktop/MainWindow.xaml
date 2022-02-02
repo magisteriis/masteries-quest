@@ -19,7 +19,7 @@
                Margin="48,0,0,0" VerticalAlignment="Center"/>
         </Grid>
 
-        <NavigationView Grid.Row="1" x:Name="MainNavigationView" SelectionChanged="MainNavigationView_SelectionChanged" Background="MidnightBlue">
+        <NavigationView Grid.Row="1" x:Name="MainNavigationView" IsBackButtonVisible="Collapsed" SelectionChanged="MainNavigationView_SelectionChanged" Background="MidnightBlue">
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
             </NavigationView.AutoSuggestBox>

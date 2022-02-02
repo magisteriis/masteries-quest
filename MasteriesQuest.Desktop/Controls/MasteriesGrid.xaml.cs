@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MasteriesQuest.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -9,6 +10,7 @@ using RiotGames.LeagueOfLegends;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,15 +30,15 @@ namespace MasteriesQuest.Controls
             this.DataContext = this;
         }
 
-        public IEnumerable MasteriesSource
+        public ObservableCollection<ChampionMasteryViewModel> MasteriesSource
         {
-            get { return (IEnumerable)GetValue(MasteriesSourceProperty); }
-            set { SetValue(MasteriesSourceProperty, value); }
+            get => (ObservableCollection<ChampionMasteryViewModel>)GetValue(MasteriesSourceProperty);
+            set => SetValue(MasteriesSourceProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for MasteriesSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MasteriesSourceProperty =
-            DependencyProperty.Register("MasteriesSource", typeof(IEnumerable), typeof(MasteriesGrid), new PropertyMetadata(0));
+            DependencyProperty.Register("MasteriesSource", typeof(ObservableCollection<ChampionMasteryViewModel>), typeof(MasteriesGrid), new PropertyMetadata(0));
 
         private void MasteriesDataGrid_AutoGeneratingColumn(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
         {

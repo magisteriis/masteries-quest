@@ -17,7 +17,7 @@ namespace MasteriesQuest.ViewModels
             set => SetProperty(ref _name, value);
         }
 
-        public ObservableCollection<ChampionMastery> Masteries { get; } = new();
+        public ObservableCollection<ChampionMasteryViewModel> Masteries { get; } = new();
 
         public void Populate(Summoner summoner)
         {
@@ -27,7 +27,7 @@ namespace MasteriesQuest.ViewModels
         public void Populate(ICollection<ChampionMastery> masteries)
         {
             foreach(var mastery in masteries)
-                Masteries.Add(mastery);
+                Masteries.Add(new ChampionMasteryViewModel(mastery));
         }
     }
 }

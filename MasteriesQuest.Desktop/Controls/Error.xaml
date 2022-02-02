@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Source="../Assets/Emotes/DoesNotCompute.png" Height="300" HorizontalAlignment="Center" Width="300" Margin="12"/>
-            <TextBlock Text="Coulnd't find what you were looking for..." Style="{StaticResource SubtitleTextBlockStyle}" />
+            <TextBlock Text="Couldn't find what you were looking for..." Style="{StaticResource SubtitleTextBlockStyle}" />
         </StackPanel>
     </Grid>
 </UserControl>
