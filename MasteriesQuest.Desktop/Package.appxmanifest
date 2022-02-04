@@ -4,16 +4,17 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  IgnorableNamespaces="uap rescap mp">
 
   <Identity
-    Name="4deb98b0-585f-404b-81ed-487a7a2141c8"
-    Publisher="CN=Mikael"
+    Name="63348Swebias.TheMasteriesQuest"
+    Publisher="CN=731C04CF-6B3E-4849-9E07-A8FD19D79A09"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>MasteriesQuest.Desktop</DisplayName>
-    <PublisherDisplayName>Mikael</PublisherDisplayName>
+    <DisplayName>The Masteries Quest</DisplayName>
+    <PublisherDisplayName>Mikael Dúi Bolinder</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

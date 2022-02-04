@@ -30,6 +30,7 @@ namespace MasteriesQuest
             this.Title = "The Masteries Quest";
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(AppTitleBar);
+            this.SetWindowIcon("Assets/Square44x44Logo.ico"); // For task switcher
             this.Activated += async (_, e) =>
             {
                 if (e.WindowActivationState != WindowActivationState.Deactivated)

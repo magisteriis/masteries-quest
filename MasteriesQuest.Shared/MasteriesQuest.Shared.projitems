@@ -14,27 +14,29 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\LolClientExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FeaturedGamesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
   </ItemGroup>
-
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RepositoryUrl>https://github.com/mikaeldui/champion-mastery</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/mikaeldui/champion-mastery</PackageProjectUrl>
-    <Authors>Mikael Dúi Bolinder</Authors>
+    <RepositoryUrl>https://github.com/magisteriis/masteries-quest</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/magisteriis/masteries-quest</PackageProjectUrl>
+    <Authors>Magisteriis and Mikael Dúi Bolinder</Authors>
     <Product>The Masteries Quest</Product>
     <Company>The Masteries Quest</Company>
     <PackageTags>League of Legends; Champion Mastery</PackageTags>
-    <Copyright>Copyleft 2022 The Masteries Quest</Copyright>
+    <Copyright>Copyporo 2022 Magisteriis</Copyright>
     <RootNamespace>MasteriesQuest</RootNamespace>
+    <AssemblyTitle>The Masteries Quest</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <Using Include="CommunityToolkit.Mvvm.ComponentModel" />
     <Using Include="System.ComponentModel.DataAnnotations" />
-    <Using Include="MasteriesQuest.ViewModels" /> 
+    <Using Include="MasteriesQuest.ViewModels" />
+    <Using Include="System.Collections.ObjectModel" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />

@@ -26,7 +26,7 @@
                 <ctui:Effects.Shadow>
                     <ctm:AttachedCardShadow BlurRadius="24" Color="Black" Opacity="0.4"/>
                 </ctui:Effects.Shadow>
-                <controls:SummonerSearchBox />
+                <controls:SummonerSearchBox FontSize="36" />
             </StackPanel>
         </StackPanel>
         <controls:FeaturedGames Grid.Row="1" />

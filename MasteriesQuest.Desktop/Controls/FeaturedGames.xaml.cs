@@ -25,5 +25,7 @@ namespace MasteriesQuest.Controls
         {
             this.InitializeComponent();
         }
+
+        public FeaturedGamesViewModel ViewModel { get; set; } = new();
     }
 }

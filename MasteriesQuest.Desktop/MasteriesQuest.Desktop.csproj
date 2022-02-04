@@ -11,6 +11,9 @@
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     <Description>A WinUI 3 app for The Masteries Quest.</Description>
     <PackageProjectUrl>https://masteries.quest/desktop</PackageProjectUrl>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <ApplicationIcon>Assets\Square44x44Logo.ico</ApplicationIcon>
+    <AssemblyName>MasteriesQuest</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,13 +49,13 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.WinUI" Version="*" />
-    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Media" Version="*" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="*" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
-	<!--<PackageReference Include="PInvoke.User32" Version="*" />-->
+	<PackageReference Include="PInvoke.User32" Version="*" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -61,6 +64,11 @@
        package has not yet been restored -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\Square44x44Logo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\ChampSelectPage.xaml">

@@ -38,31 +38,31 @@ namespace MasteriesQuest.Pages
         {
             try
             {
+                // Needs region as parameter.
                 using LeagueOfLegendsClient client = new("desktop", Server.EUW);
-
                 var summoner = e.Parameter as Summoner;
                 switch (e.Parameter)
                 {
                     case string summonerName:
                         summoner = await client.GetSummonerByNameAsync(summonerName);
-
-
-                        goto default;
-                    default:
-                        DispatcherQueue.TryEnqueue(() =>
-                        {
-                            Summoner.Populate(summoner);
-                        });
-
-                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-
-                        DispatcherQueue.TryEnqueue(() =>
-                        {
-                            Summoner.Populate(masteries);
-                            SummonerGrid.Visibility = Visibility.Visible;
-                            LoadingControl.IsLoading = false;
-                        });
                         break;
+                }
+
+                if (summoner != null)
+                {
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        Summoner.Populate(summoner);
+                    });
+
+                    var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        Summoner.Populate(masteries);
+                        SummonerGrid.Visibility = Visibility.Visible;
+                        LoadingControl.IsLoading = false;
+                    });
                 }
             }
             catch (HttpRequestException)
