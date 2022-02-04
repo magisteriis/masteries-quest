@@ -30,7 +30,11 @@ namespace MasteriesQuest
             this.Title = "The Masteries Quest";
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(AppTitleBar);
-            //this.SetWindowIcon("MasteriesQuest.ico");
+            this.Activated += async (_, e) =>
+            {
+                if (e.WindowActivationState != WindowActivationState.Deactivated)
+                    await _readSummonersFromLcuAsync();
+            };
         }
 
         private void MainNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -62,6 +66,25 @@ namespace MasteriesQuest
             contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
             AutoSuggestBoxControl.Text = null;
             contentFrame.Focus(FocusState.Programmatic);
+        }
+
+        private async Task _readSummonersFromLcuAsync()
+        {
+            try
+            {
+                var summonerNames = await LcuHelper.GetChampSelectSummonerNames().TimeoutAfter(TimeSpan.FromSeconds(3));
+
+                // If no summoners found, do nothing.
+                if (summonerNames == null || summonerNames.Length == 0)
+                    return;
+
+                contentFrame.Navigate(typeof(ChampSelectPage), summonerNames);
+            }
+            // Thrown by TimeoutAfter.
+            catch (TimeoutException)
+            {
+                return;
+            }
         }
     }
 }

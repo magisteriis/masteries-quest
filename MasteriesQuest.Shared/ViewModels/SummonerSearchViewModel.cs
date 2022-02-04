@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-#nullable enable
+﻿using RiotGames.LeagueOfLegends;
 
 namespace MasteriesQuest.ViewModels
 {
-    public class SummonerSearchViewModel
+    public class SummonerSearchViewModel : ObservableObject
     {
-        [Required]
-        public string? SummonerName { get; set; }
+        private string? _summonerName;
+        private Server _server = Server.NA; // TODO: Select based on user country.
 
         [Required]
-        public Camille.Enums.PlatformRoute Platform { get; set; } = Camille.Enums.PlatformRoute.NA1;
+        public string? SummonerName { get => _summonerName; set => SetProperty(ref _summonerName, value); }
+
+#if WINDOWS
+        public Server Server { get => _server; set => SetProperty(ref _server, value); }
+#else
+        [Required]
+        public Camille.Enums.PlatformRoute Platform { get => _server; set => SetProperty(ref _server, value); }
+#endif
+        public List<Server> Servers { get; set; } = Server.All.Where(x => x != Server.PBE).ToList();
     }
 }

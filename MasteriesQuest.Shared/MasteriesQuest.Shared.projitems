@@ -9,11 +9,36 @@
     <Import_RootNamespace>MasteriesQuest</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Clients\DataDragonClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ChampionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\LolClientExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/mikaeldui/champion-mastery</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mikaeldui/champion-mastery</PackageProjectUrl>
+    <Authors>Mikael Dúi Bolinder</Authors>
+    <Product>The Masteries Quest</Product>
+    <Company>The Masteries Quest</Company>
+    <PackageTags>League of Legends; Champion Mastery</PackageTags>
+    <Copyright>Copyleft 2022 The Masteries Quest</Copyright>
+    <RootNamespace>MasteriesQuest</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="CommunityToolkit.Mvvm.ComponentModel" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Using Include="MasteriesQuest.ViewModels" /> 
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
+    <PackageReference Include="Humanizer.Core" Version="*" />
+    <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
   </ItemGroup>
 </Project>

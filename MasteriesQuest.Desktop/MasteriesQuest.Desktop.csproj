@@ -1,27 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>MasteriesQuest</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
-    <Authors>Mikael Dúi Bolinder</Authors>
-    <Product>The Masteries Quest</Product>
-    <Company>The Masteries Quest</Company>
     <Description>A WinUI 3 app for The Masteries Quest.</Description>
-    <Copyright>Copyleft 2022 The Masteries Quest</Copyright>
     <PackageProjectUrl>https://masteries.quest/desktop</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mikaeldui/masteries-quest-desktop</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="RiotGames.LeagueOfLegends" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="true" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Controls\Error.xaml" />
+    <None Remove="Controls\FeaturedGames.xaml" />
     <None Remove="Controls\MasteriesGrid.xaml" />
+    <None Remove="Controls\SummonerSearchBox.xaml" />
+    <None Remove="Pages\ChampSelectPage.xaml" />
     <None Remove="Pages\HighscoresPage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
     <None Remove="Pages\MatchPage.xaml" />
@@ -40,14 +45,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="*" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Media" Version="*" />
-    <PackageReference Include="Humanizer.Core" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
-    <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
 	<!--<PackageReference Include="PInvoke.User32" Version="*" />-->
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -57,6 +61,21 @@
        package has not yet been restored -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\ChampSelectPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\SummonerSearchBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\FeaturedGames.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Error.xaml">

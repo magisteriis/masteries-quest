@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -37,30 +38,39 @@ namespace MasteriesQuest.Pages
         {
             try
             {
-                var summonerName = e.Parameter as string;
-
                 using LeagueOfLegendsClient client = new("desktop", Server.EUW);
-                var summoner = await client.GetSummonerByNameAsync(summonerName);
 
-                DispatcherQueue.TryEnqueue(() =>
+                var summoner = e.Parameter as Summoner;
+                switch (e.Parameter)
                 {
-                    Summoner.Populate(summoner);
-                });
+                    case string summonerName:
+                        summoner = await client.GetSummonerByNameAsync(summonerName);
 
-                var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-                DispatcherQueue.TryEnqueue(() =>
-                {
-                    Summoner.Populate(masteries);
-                    SummonerGrid.Visibility = Visibility.Visible;
-                    LoadingControl.IsLoading = false;
-                });
+
+                        goto default;
+                    default:
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            Summoner.Populate(summoner);
+                        });
+
+                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            Summoner.Populate(masteries);
+                            SummonerGrid.Visibility = Visibility.Visible;
+                            LoadingControl.IsLoading = false;
+                        });
+                        break;
+                }
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
                 LoadingControl.IsLoading = false;
                 SummonerNotFoundError.Visibility = Visibility.Visible;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 LoadingControl.IsLoading = false;
                 SummonerNotFoundError.Visibility = Visibility.Visible;

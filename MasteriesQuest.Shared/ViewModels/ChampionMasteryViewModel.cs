@@ -10,10 +10,10 @@ namespace MasteriesQuest.ViewModels
     public class ChampionMasteryViewModel : ObservableObject
     {
         private ChampionMastery _mastery;
-        public ChampionMasteryViewModel(ChampionMastery mastery)
-        {
-            Populate(mastery);
-        }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public ChampionMasteryViewModel(ChampionMastery mastery) => Populate(mastery);
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         private string _champion;
 
@@ -39,17 +39,15 @@ namespace MasteriesQuest.ViewModels
             set => SetProperty(ref _points, value);
         }
 
-        private bool _isChestGranted;
+        private bool? _isChestGranted;
 
-        public bool IsChestGranted
+        public bool? IsChestGranted
         {
             get { return _isChestGranted; }
             set => SetProperty(ref _isChestGranted, value);
         }
 
         private string _lastPlayed;
-
-
 
         public string LastPlayed
         {

@@ -5,10 +5,30 @@
     xmlns:local="using:MasteriesQuest.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MasteriesQuest.Controls"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ctui="using:CommunityToolkit.WinUI.UI"
+    xmlns:ctm="using:CommunityToolkit.WinUI.UI.Media"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" Padding="0,48">
+            <StackPanel Padding="0,0,0,48">
+                <TextBlock HorizontalAlignment="Center" Text="The Masteries Quest" Style="{StaticResource DisplayTextBlockStyle}" />
+                <TextBlock HorizontalAlignment="Center" Text="Usus est magister optimus" Foreground="Gray" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <ctui:Effects.Shadow>
+                    <ctm:AttachedCardShadow BlurRadius="24" Color="Black" Opacity="0.4"/>
+                </ctui:Effects.Shadow>
+                <controls:SummonerSearchBox />
+            </StackPanel>
+        </StackPanel>
+        <controls:FeaturedGames Grid.Row="1" />
     </Grid>
 </Page>

@@ -12,7 +12,7 @@
         <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor">Navy</SolidColorBrush>
     </UserControl.Resources>
 
-    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{x:Bind MasteriesSource, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False">
+    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{x:Bind MasteriesSource, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="True">
         <ct:DataGrid.Columns>
             <ct:DataGridTextColumn 
                 Header="Champion" 

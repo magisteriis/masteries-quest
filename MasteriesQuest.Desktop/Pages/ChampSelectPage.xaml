@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="MasteriesQuest.Pages.ChampSelectPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MasteriesQuest.Pages"
+    xmlns:viewModels="using:MasteriesQuest.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="MainGrid">
+        <ScrollViewer Holding="ScrollViewer_Holding" VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto">
+            <!--<FlyoutBase.AttachedFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem x:Name="CopyAllSummonersButton" Click="CopyAllSummonersButton_Click" Text="Copy all summoners"/>
+                </MenuFlyout>
+            </FlyoutBase.AttachedFlyout>-->
+            <ItemsRepeater Grid.Row="0" x:Name="MasteryStackPanel" ItemsSource="{x:Bind Summoners, Mode=OneWay}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Orientation="Horizontal" Spacing="8"/>
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:SummonerViewModel">
+                        <Grid Width="518" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="148" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="24">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.ColumnSpan="4" Text="{x:Bind Name, Mode=OneWay}" FontSize="48" />
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="Total champions:" Margin="0,0,12,0" />
+                                    <TextBlock Text="{x:Bind TotalChampions, Mode=OneWay}" Margin="0,0,24,0"/>
+                                    <TextBlock Text="Total points:" Margin="0,0,12,0" />
+                                    <TextBlock Text="{x:Bind IntFormat(TotalPoints, 'N0'), Mode=OneWay}" />
+                                </StackPanel>
+                            </Grid>
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled">
+                                <ItemsRepeater ItemsSource="{x:Bind Masteries, Mode=OneWay}" VerticalAlignment="Top" Background="Transparent">
+                                    <ItemsRepeater.ItemTemplate>
+                                        <DataTemplate x:DataType="viewModels:ChampionMasteryViewModel">
+                                            <Grid Margin="0,12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{x:Bind Champion}" Width="110" Margin="24,0,0,0" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind Level}" Width="20" />
+                                                <TextBlock Grid.Column="2" Text="{x:Bind Points}" Width="70" />
+                                                <CheckBox Grid.Column="3" IsChecked="{x:Bind IsChestGranted}" IsEnabled="False" />
+                                                <!--<TextBlock Grid.Column="3" Text="{x:Bind IsChestGranted}" Width="40" />-->
+                                                <TextBlock Grid.Column="4" Text="{x:Bind LastPlayed}" Width="110" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsRepeater.ItemTemplate>
+                                </ItemsRepeater>
+                            </ScrollViewer>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+    </Grid>
+</Page>
