@@ -13,7 +13,7 @@
                     @foreach(var entry in championHighscores.Highscores)
                     {
                         string link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
-                        <a href="@link" class="list-group-item list-group-item-action">@entry.SummonerName - @entry.Score.ToString("N0")</a>
+                        <a href="@link" class="list-group-item list-group-item-action">@entry.SummonerName - @string.Format("{0:n0}", entry.Score)</a>
                     }
                 </div>
             </div>
