@@ -1,0 +1,127 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x86;x64;arm64</Platforms>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
+    <UseWinUI>true</UseWinUI>
+    <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+    <Description>A WinUI 3 app for The Masteries Quest.</Description>
+    <PackageProjectUrl>https://masteries.quest/desktop</PackageProjectUrl>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <ApplicationIcon>Assets\Square44x44Logo.ico</ApplicationIcon>
+    <AssemblyName>MasteriesQuest</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="RiotGames.LeagueOfLegends" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Controls\Error.xaml" />
+    <None Remove="Controls\FeaturedGames.xaml" />
+    <None Remove="Controls\MasteriesGrid.xaml" />
+    <None Remove="Controls\SummonerSearchBox.xaml" />
+    <None Remove="Pages\ChampSelectPage.xaml" />
+    <None Remove="Pages\HighscoresPage.xaml" />
+    <None Remove="Pages\HomePage.xaml" />
+    <None Remove="Pages\MatchPage.xaml" />
+    <None Remove="Pages\SettingsPage.xaml" />
+    <None Remove="Pages\SummonerPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="Assets\Emotes\LookingForThis.png" />
+	<Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Media" Version="*" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="*" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="*" />
+	<PackageReference Include="PInvoke.User32" Version="*" />
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+       Tools extension to be activated for this project even if the Windows App SDK Nuget
+       package has not yet been restored -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\Square44x44Logo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\ChampSelectPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\SummonerSearchBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\FeaturedGames.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Error.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\MatchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SummonerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\HighscoresPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\MasteriesGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Update="MikaelDui.ChampionMasteryGg.Client" Version="2.0.8" />
+  </ItemGroup>
+</Project>

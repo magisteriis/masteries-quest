@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MasteriesQuest.Desktop (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MasteriesQuest.Desktop (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

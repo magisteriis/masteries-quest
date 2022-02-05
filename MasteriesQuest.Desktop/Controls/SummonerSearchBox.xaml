@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="MasteriesQuest.Controls.SummonerSearchBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MasteriesQuest.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{x:Bind SummonerSearch}"
+    mc:Ignorable="d">
+
+    <StackPanel Orientation="Horizontal">
+        <ComboBox x:Name="ServeComboBox" ItemsSource="{Binding Servers}" SelectedItem="{Binding Server}" DisplayMemberPath="Abbreviation" 
+                  FontSize="{x:Bind FontSize}" Background="#00007d" PlaceholderText="NA"
+                  Margin="0" />
+        <TextBox x:Name="SummonerNameTextBox" Text="{Binding SummonerName}" PlaceholderText="Search for summoner..." 
+                 FontSize="{x:Bind FontSize}" Width="500" Background="#00007d"
+                 CornerRadius="0" Margin="0" />
+        <Button x:Name="SearchButton" Content="&#xE721;" FontSize="{x:Bind FontSize}" FontFamily="Segoe MDL2 Assets" 
+                Margin="0" />
+    </StackPanel>
+</UserControl>

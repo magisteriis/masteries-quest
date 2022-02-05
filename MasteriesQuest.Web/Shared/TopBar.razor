@@ -18,7 +18,7 @@
             <div class="input-group-prepend">
                 <InputSelect name="summoner-region" @bind-Value="summonerSearch.Platform" class="form-control" 
                     style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" DisplayName="Server">
-                    @foreach(var server in Server.All.Where(s => s != Server.PBE))
+                    @foreach(var server in summonerSearch.Servers)
                     {
                         string optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
                         <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>                        
@@ -223,7 +223,7 @@
 
 
 @code {
-    private SummonerSearch summonerSearch = new();
+    private SummonerSearchViewModel summonerSearch = new();
 
     protected override async Task OnInitializedAsync()
     {

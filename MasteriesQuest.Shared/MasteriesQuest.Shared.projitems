@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>416903be-8f11-4b48-a4c3-40c8bb9b9cd9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>MasteriesQuest</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Clients\DataDragonClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ChampionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\LolClientExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FeaturedGamesViewModel.cs" />
+    <Compile Include="..\MasteriesQuest.Shared\ViewModels\HighscoresOverviewViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/magisteriis/masteries-quest</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/magisteriis/masteries-quest</PackageProjectUrl>
+    <Authors>Magisteriis and Mikael Dúi Bolinder</Authors>
+    <Product>The Masteries Quest</Product>
+    <Company>The Masteries Quest</Company>
+    <PackageTags>League of Legends; Champion Mastery</PackageTags>
+    <Copyright>Copyporo 2022 Magisteriis</Copyright>
+    <RootNamespace>MasteriesQuest</RootNamespace>
+    <AssemblyTitle>The Masteries Quest</AssemblyTitle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="CommunityToolkit.Mvvm.ComponentModel" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Using Include="MasteriesQuest.ViewModels" />
+    <Using Include="System.Collections.ObjectModel" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
+    <PackageReference Include="Humanizer.Core" Version="*" />
+    <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
+    <PackageReference Include="MikaelDui.ChampionMasteryGg.Client" Version="*" />
+  </ItemGroup>
+</Project>
