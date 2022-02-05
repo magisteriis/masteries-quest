@@ -1,0 +1,37 @@
+﻿@page "/highscores/{championName}"
+@using ChampionMasteryGg
+
+
+<h3>@ChampionName</h3>
+
+<div class="list-group animated--grow-in">
+    <div class="list-group">
+        @for(int i = 0; i < _highscores.Count; i++)
+        {
+            var entry = _highscores[i];
+            string link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
+            <a href="@link" id="@(i+1)" class="list-group-item list-group-item-action">#@(i+1) - @entry.SummonerName - @string.Format("{0:n0}", entry.Score)</a>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? ChampionName { get; set; }
+
+    private List<HighscoreEntryViewModel> _highscores { get; set; } = new List<HighscoreEntryViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ChampionName == null)
+            return;
+
+        using ChampionMasteryGgClient client = new();
+        var highscores = await client.GetHighscoresAsync((int)Enum.Parse<Camille.Enums.Champion>(ChampionName, true));
+
+        foreach (var entry in highscores)
+            _highscores.Add(new HighscoreEntryViewModel(entry));
+    }
+
+}
