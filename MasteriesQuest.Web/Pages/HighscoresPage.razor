@@ -1,0 +1,42 @@
+﻿@page "/highscores"
+@using ChampionMasteryGg
+
+<h3>Highscores</h3>
+
+<div class="card-columns">
+    @foreach(var championHighscores in _highscoresOverview.Champions)
+    {
+        <div class="card">
+            <div class="card-header">@championHighscores.ChampionName</div>
+            <div class="card-body">
+                <div class="list-group">
+                    @foreach(var entry in championHighscores.Highscores)
+                    {
+                        string link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
+                        <a href="@link" class="list-group-item list-group-item-action">@entry.SummonerName</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    private HighscoresOverviewViewModel _highscoresOverview { get; set; } = new HighscoresOverviewViewModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using ChampionMasteryGgClient client = new();
+        var highscores = await client.GetHighscoresAsync();
+
+            //foreach (var highscore in highscores.TotalPoints)
+            //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
+            //foreach (var highscore in highscores.TotalLevel)
+            //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
+            foreach (var championHighscores in highscores.Champions)
+                _highscoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
+
+    }
+
+}
