@@ -64,8 +64,9 @@ namespace MasteriesQuest
 
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
             AutoSuggestBoxControl.Text = null;
+            MainNavigationView.SelectedItem = null;
+            contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
             contentFrame.Focus(FocusState.Programmatic);
         }
 

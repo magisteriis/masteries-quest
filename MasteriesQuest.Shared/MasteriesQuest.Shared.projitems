@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FeaturedGamesViewModel.cs" />
+    <Compile Include="..\MasteriesQuest.Shared\ViewModels\HighscoresOverviewViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
   </ItemGroup>
@@ -42,5 +43,6 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
     <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
+    <PackageReference Include="MikaelDui.ChampionMasteryGg.Client" Version="*" />
   </ItemGroup>
 </Project>

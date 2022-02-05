@@ -34,47 +34,52 @@ namespace MasteriesQuest.Pages
 
         public SummonerViewModel Summoner { get; set; } = new SummonerViewModel();
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            try
+            var summonerName = e.Parameter as string;
+            _ = Task.Run(async () =>
             {
-                // Needs region as parameter.
-                using LeagueOfLegendsClient client = new("desktop", Server.EUW);
-                var summoner = e.Parameter as Summoner;
-                switch (e.Parameter)
+                try
                 {
-                    case string summonerName:
-                        summoner = await client.GetSummonerByNameAsync(summonerName);
-                        break;
+                    // Needs region as parameter.
+                    using LeagueOfLegendsClient client = new("desktop", Server.EUW);
+
+                    var summoner = await client.GetSummonerByNameAsync(summonerName);
+
+                    if (summoner != null)
+                    {
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            Summoner.Populate(summoner);
+                        });
+
+                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            Summoner.Populate(masteries);
+                            SummonerGrid.Visibility = Visibility.Visible;
+                            LoadingControl.IsLoading = false;
+                        });
+                    }
                 }
-
-                if (summoner != null)
+                catch (HttpRequestException)
                 {
                     DispatcherQueue.TryEnqueue(() =>
                     {
-                        Summoner.Populate(summoner);
-                    });
-
-                    var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
-
-                    DispatcherQueue.TryEnqueue(() =>
-                    {
-                        Summoner.Populate(masteries);
-                        SummonerGrid.Visibility = Visibility.Visible;
                         LoadingControl.IsLoading = false;
+                        SummonerNotFoundError.Visibility = Visibility.Visible;
                     });
                 }
-            }
-            catch (HttpRequestException)
-            {
-                LoadingControl.IsLoading = false;
-                SummonerNotFoundError.Visibility = Visibility.Visible;
-            }
-            catch (Exception)
-            {
-                LoadingControl.IsLoading = false;
-                SummonerNotFoundError.Visibility = Visibility.Visible;
-            }
+                catch (Exception)
+                {
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        LoadingControl.IsLoading = false;
+                        SummonerNotFoundError.Visibility = Visibility.Visible;
+                    });
+                }
+            });
         }
     }
 }

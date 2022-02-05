@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using ChampionMasteryGg;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -26,6 +27,27 @@ namespace MasteriesQuest.Pages
         public HighscoresPage()
         {
             this.InitializeComponent();
+        }
+
+        public HighscoresOverviewViewModel HighscoresOverview { get; set; } = new();
+
+        // TODO: Implement CancellationToken.
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _ = Task.Run(async () =>
+            {
+                using ChampionMasteryGgClient client = new();
+                var highscores = await client.GetHighscoresAsync();
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    //foreach (var highscore in highscores.TotalPoints)
+                    //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
+                    //foreach (var highscore in highscores.TotalLevel)
+                    //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
+                    foreach (var championHighscores in highscores.Champions)
+                        HighscoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
+                });
+            });
         }
     }
 }

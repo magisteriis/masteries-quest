@@ -121,4 +121,7 @@
     </Page>
   </ItemGroup>
   <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Update="MikaelDui.ChampionMasteryGg.Client" Version="2.0.8" />
+  </ItemGroup>
 </Project>
