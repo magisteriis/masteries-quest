@@ -5,6 +5,14 @@
 
 A Champion Mastery Blazor WebAssembly app that uses [MikaelDui.RiotGames.Client](https://github.com/mikaeldui/riot-games-dotnet-client) and a Cloudflare Worker.
 
+# Web (Beta)
+
 Live at: [masteries.quest](https://masteries.quest)
 
 ![image](https://user-images.githubusercontent.com/3706841/151392473-a42e57c1-f88e-4280-bc31-8fa2c7455c23.png)
+
+# Desktop (Alpha)
+
+You can build it from source.
+
+![image](https://user-images.githubusercontent.com/3706841/152638484-755b9c9a-c606-4777-9306-def38d80735e.png)
