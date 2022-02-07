@@ -13,6 +13,6 @@ Live at: [masteries.quest](https://masteries.quest)
 
 # Desktop (Alpha)
 
-You can build it from source.
+You may build it from source.
 
 ![image](https://user-images.githubusercontent.com/3706841/152638484-755b9c9a-c606-4777-9306-def38d80735e.png)
