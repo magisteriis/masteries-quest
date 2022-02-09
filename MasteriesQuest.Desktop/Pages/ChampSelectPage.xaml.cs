@@ -41,7 +41,15 @@ namespace MasteriesQuest.Pages
             if (summonerNames != null)
             {
                 DispatcherQueue.TryEnqueue(() => MainGrid.Background = new SolidColorBrush(LcuHelper.TeamId == 1 ? Colors.Navy : Colors.DarkRed));
-                await _setSummonersAsync(summonerNames);
+                try
+                {
+                    await _setSummonersAsync(summonerNames);
+                }
+                catch
+                {
+                    LcuHelper.LastGameId = -1;
+                    // Show error/retry.
+                }
             }
         }
 
