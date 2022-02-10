@@ -14,7 +14,7 @@
     <div class="row">
         @foreach(var summoner in _summoners)
         {
-            <p>@JsonSerializer.Serialize(summoner, new JsonSerializerOptions { WriteIndented = true })</p>
+            <pre>@JsonSerializer.Serialize(summoner, new JsonSerializerOptions { WriteIndented = true })</pre>
         }
     </div>
 }
