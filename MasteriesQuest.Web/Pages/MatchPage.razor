@@ -19,7 +19,7 @@
     </div>
 }
 
-<p>@_somethingElse</p>
+<pre>@_somethingElse</pre>
 
 @code {
     [Parameter]
@@ -91,7 +91,7 @@
                         //var summoners = await Task.WhenAll(summonerIds.Select(si => client.GetSummonerAsync(si)));
                         // Update teams
 
-                        _somethingElse = JsonSerializer.Serialize(match);
+                        _somethingElse = JsonSerializer.Serialize(match, new JsonSerializerOptions { WriteIndented = true });
                     }
                     return;
                 }
@@ -116,7 +116,7 @@
                         if (activeGame.GameId != MatchId)
                             throw new Exception("The match seems to be in the past.");                        
                             
-                        _somethingElse = JsonSerializer.Serialize(activeGame);
+                        _somethingElse = JsonSerializer.Serialize(activeGame, new JsonSerializerOptions { WriteIndented = true });
                         // Update teams
                     }
                     catch
