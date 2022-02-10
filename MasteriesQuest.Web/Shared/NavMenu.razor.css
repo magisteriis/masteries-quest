@@ -1,0 +1,3 @@
+.sidebar #sidebarToggle:after {
+   content: none;
+}
