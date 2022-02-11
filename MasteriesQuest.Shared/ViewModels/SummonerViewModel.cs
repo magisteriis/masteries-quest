@@ -33,7 +33,7 @@ namespace MasteriesQuest.ViewModels
 
         public long? TotalChampions
         {
-            get { return _totalChampions; }
+            get => _totalChampions;
             set => SetProperty(ref _totalChampions, value);
         }
 
@@ -41,7 +41,7 @@ namespace MasteriesQuest.ViewModels
 
         public long? TotalPoints
         {
-            get { return _totalPoints; }
+            get => _totalPoints;
             set => SetProperty(ref _totalPoints, value);
         }
 

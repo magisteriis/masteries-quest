@@ -63,12 +63,13 @@ namespace MasteriesQuest.Pages
                         });
                     }
                 }
-                catch (HttpRequestException)
+                catch (HttpRequestException ex)
                 {
                     DispatcherQueue.TryEnqueue(() =>
                     {
                         LoadingControl.IsLoading = false;
-                        SummonerNotFoundError.Visibility = Visibility.Visible;
+                        Error.Reason = ex.Message.Contains("429") ? Controls.ErrorReason.RateLimit : Controls.ErrorReason.NotFound;
+                        Error.Show();
                     });
                 }
                 catch (Exception)
@@ -76,7 +77,8 @@ namespace MasteriesQuest.Pages
                     DispatcherQueue.TryEnqueue(() =>
                     {
                         LoadingControl.IsLoading = false;
-                        SummonerNotFoundError.Visibility = Visibility.Visible;
+                        Error.Reason = Controls.ErrorReason.Error;
+                        Error.Show();
                     });
                 }
             });

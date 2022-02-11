@@ -19,7 +19,7 @@ namespace MasteriesQuest.ViewModels
 
         public string Champion
         {
-            get { return _champion; }
+            get => _champion;
             set => SetProperty(ref _champion, value);
         }
 
@@ -27,7 +27,7 @@ namespace MasteriesQuest.ViewModels
 
         public byte Level
         {
-            get { return _level; }
+            get => _level;
             set => SetProperty(ref _level, value);
         }
 
@@ -35,7 +35,7 @@ namespace MasteriesQuest.ViewModels
 
         public string Points
         {
-            get { return _points; }
+            get => _points;
             set => SetProperty(ref _points, value);
         }
 
@@ -43,7 +43,7 @@ namespace MasteriesQuest.ViewModels
 
         public bool? IsChestGranted
         {
-            get { return _isChestGranted; }
+            get => _isChestGranted;
             set => SetProperty(ref _isChestGranted, value);
         }
 
@@ -51,7 +51,7 @@ namespace MasteriesQuest.ViewModels
 
         public string LastPlayed
         {
-            get { return _lastPlayed; }
+            get => _lastPlayed;
             set => SetProperty(ref _lastPlayed, value);
         }
 

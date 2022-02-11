@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,72 @@ using Windows.Foundation.Collections;
 
 namespace MasteriesQuest.Controls
 {
+    public enum ErrorReason
+    {
+        Error,
+        NotFound,
+        RateLimit
+    }
+
     public sealed partial class Error : UserControl
     {
         public Error()
         {
             this.InitializeComponent();
+            this.Visibility = Visibility.Collapsed;
         }
+
+        public ErrorReason Reason
+        {
+            get => (ErrorReason)GetValue(ReasonProperty);
+            set
+            {
+                SetValue(ReasonProperty, value);
+                switch (value)
+                {
+                    case ErrorReason.NotFound:
+                        ReasonPhrase = "Couldn't find what you were looking for...";
+                        ImageSource = new BitmapImage(Emotes.NotFound.Random()(1));
+                        break;
+                    case ErrorReason.RateLimit:
+                        ReasonPhrase = "Ouch. We've reached the limits of Riot's API. Try again later...";
+                        ImageSource = new BitmapImage(Emotes.RateLimit.Random()(1));
+                        break;
+                    case ErrorReason.Error:
+                    default:
+                        ReasonPhrase = "Something unexpected happened. Please open a GitHub issue!";
+                        ImageSource = new BitmapImage(Emotes.Error.Random()(1));
+                        break;
+                }
+            }
+        }
+
+        public string ReasonPhrase
+        {
+            get => (string)GetValue(ReasonPhraseProperty);
+            set => SetValue(ReasonPhraseProperty, value);
+        }
+
+        public ImageSource ImageSource
+        {
+            get => (ImageSource)GetValue(ImageSourceProperty);
+            set => SetValue(ImageSourceProperty, value);
+        }
+
+        public void Show() => this.Visibility = Visibility.Visible;
+
+        public void Hide() => this.Visibility = Visibility.Collapsed;
+
+        // Using a DependencyProperty as the backing store for Reason.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ReasonProperty =
+            DependencyProperty.Register("Reason", typeof(ErrorReason), typeof(Error), new PropertyMetadata(0));
+
+        // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ImageSourceProperty =
+            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(Error), new PropertyMetadata(0));
+
+        // Using a DependencyProperty as the backing store for ReasonPhrase.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ReasonPhraseProperty =
+            DependencyProperty.Register("ReasonPhrase", typeof(string), typeof(Error), new PropertyMetadata(0));
     }
 }

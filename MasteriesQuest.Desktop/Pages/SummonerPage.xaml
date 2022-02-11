@@ -30,6 +30,6 @@
                 <TextBlock Text="Feeding poros, please wait..." VerticalAlignment="Center" Foreground="White" />
             </StackPanel>
         </ct:Loading>
-        <controls:Error x:Name="SummonerNotFoundError" Visibility="Collapsed" />
+        <controls:Error x:Name="Error" />
     </Grid>
 </Page>

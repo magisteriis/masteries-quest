@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Clients\DataDragonClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ChampionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\LolClientExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ChatHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FeaturedGamesViewModel.cs" />

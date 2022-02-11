@@ -9,8 +9,8 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image Source="../Assets/Emotes/DoesNotCompute.png" Height="300" HorizontalAlignment="Center" Width="300" Margin="12"/>
-            <TextBlock Text="Couldn't find what you were looking for..." Style="{StaticResource SubtitleTextBlockStyle}" />
+            <Image Source="{x:Bind ImageSource}" Height="300" HorizontalAlignment="Center" Width="300" Margin="12"/>
+            <TextBlock Text="{x:Bind ReasonPhrase}" Style="{StaticResource SubtitleTextBlockStyle}" />
         </StackPanel>
     </Grid>
 </UserControl>
