@@ -44,16 +44,16 @@ namespace MasteriesQuest.Controls
                 {
                     case ErrorReason.NotFound:
                         ReasonPhrase = "Couldn't find what you were looking for...";
-                        ImageSource = new BitmapImage(Emotes.NotFound.Random()(1));
+                        ImageSource = new BitmapImage(Emotes.NotFound.Random());
                         break;
                     case ErrorReason.RateLimit:
                         ReasonPhrase = "Ouch. We've reached the limits of Riot's API. Try again later...";
-                        ImageSource = new BitmapImage(Emotes.RateLimit.Random()(1));
+                        ImageSource = new BitmapImage(Emotes.RateLimit.Random());
                         break;
                     case ErrorReason.Error:
                     default:
                         ReasonPhrase = "Something unexpected happened. Please open a GitHub issue!";
-                        ImageSource = new BitmapImage(Emotes.Error.Random()(1));
+                        ImageSource = new BitmapImage(Emotes.Error.Random());
                         break;
                 }
             }
@@ -71,9 +71,26 @@ namespace MasteriesQuest.Controls
             set => SetValue(ImageSourceProperty, value);
         }
 
-        public void Show() => this.Visibility = Visibility.Visible;
+        public void Show() => Visibility = Visibility.Visible;
 
-        public void Hide() => this.Visibility = Visibility.Collapsed;
+        public void Show(Exception ex)
+        {
+            if (ex.Message != null)
+            {
+                if (ex.Message.Contains("429"))
+                    Reason = Controls.ErrorReason.RateLimit;
+                else if (ex.Message.Contains("404"))
+                    Reason = ErrorReason.NotFound;
+                else
+                    Reason = ErrorReason.Error;
+            }
+            else
+                Reason = ErrorReason.Error;
+
+            Show();
+        }
+
+        public void Hide() => Visibility = Visibility.Collapsed;
 
         // Using a DependencyProperty as the backing store for Reason.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ReasonProperty =

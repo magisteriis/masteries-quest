@@ -5,7 +5,7 @@
     xmlns:local="using:MasteriesQuest.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:MasteriesQuest.Controls"
     xmlns:viewModels="using:MasteriesQuest.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -32,5 +32,7 @@
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
         </ScrollViewer>
+        <controls:Loading x:Name="Loading" IsLoading="True" />
+        <controls:Error x:Name="Error" />
     </Grid>
 </Page>

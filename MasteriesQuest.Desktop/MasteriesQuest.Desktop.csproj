@@ -27,6 +27,7 @@
   <ItemGroup>
     <None Remove="Controls\Error.xaml" />
     <None Remove="Controls\FeaturedGames.xaml" />
+    <None Remove="Controls\Loading.xaml" />
     <None Remove="Controls\MasteriesGrid.xaml" />
     <None Remove="Controls\SummonerSearchBox.xaml" />
     <None Remove="Pages\ChampSelectPage.xaml" />
@@ -69,6 +70,11 @@
     <Content Update="Assets\Square44x44Logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Loading.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\ChampSelectPage.xaml">

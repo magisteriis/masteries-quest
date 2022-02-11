@@ -47,7 +47,7 @@ namespace MasteriesQuest
             RiotGamesApiHttpClient.BaseAddressFormat = "https://masteries.quest/api/{0}/";
             ChampionMasteryGgClient.BaseAddress = "https://masteries.quest/api/highscores/";
             ChampionMasteryGgClient.Encoding = ChampionMasteryGgEncoding.Json;
-
+            
             m_window = new MainWindow();
             m_window.Activate();
         }

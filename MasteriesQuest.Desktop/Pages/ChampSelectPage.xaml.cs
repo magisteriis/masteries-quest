@@ -35,22 +35,29 @@ namespace MasteriesQuest.Pages
 
         public ObservableCollection<SummonerViewModel> Summoners { get; set; } = new();
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var summonerNames = e.Parameter as string[];
-            if (summonerNames != null)
+            _ = Task.Run(async () =>
             {
-                DispatcherQueue.TryEnqueue(() => MainGrid.Background = new SolidColorBrush(LcuHelper.TeamId == 1 ? Colors.Navy : Colors.DarkRed));
-                try
+                if (e.Parameter is string[] summonerNames)
                 {
-                    await _setSummonersAsync(summonerNames);
+                    DispatcherQueue.TryEnqueue(() => MainGrid.Background = new SolidColorBrush(LcuHelper.TeamId == 1 ? Colors.Navy : Colors.DarkRed));
+                    try
+                    {
+                        await _setSummonersAsync(summonerNames);
+                        DispatcherQueue.TryEnqueue(() => Loading.IsLoading = false);
+                    }
+                    catch (Exception ex)
+                    {
+                        LcuHelper.LastGameId = -1;
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            Loading.IsLoading = false;
+                            Error.Show(ex);
+                        });
+                    }
                 }
-                catch
-                {
-                    LcuHelper.LastGameId = -1;
-                    // Show error/retry.
-                }
-            }
+            });
         }
 
         private async Task _setSummonersAsync(params string[] summoners)

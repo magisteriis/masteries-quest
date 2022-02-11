@@ -8,14 +8,35 @@
     DataContext="{x:Bind SummonerSearch}"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal">
-        <ComboBox x:Name="ServeComboBox" ItemsSource="{Binding Servers}" SelectedItem="{Binding Server}" DisplayMemberPath="Abbreviation" 
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="CommonStates">
+            <VisualState x:Name="MouseOver">
+                <Storyboard>
+                    <DoubleAnimation Duration="0:0:1" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" 
+						Storyboard.TargetName="button1" d:IsOptimized="True"/>
+                </Storyboard>
+            </VisualState>
+            <VisualState x:Name="Normal" />
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <ComboBox Grid.Column="0" x:Name="ServeComboBox" ItemsSource="{Binding Servers}" SelectedItem="{Binding Server}" DisplayMemberPath="Abbreviation" 
                   FontSize="{x:Bind FontSize}" Background="#00007d" PlaceholderText="NA"
                   Margin="0" />
-        <TextBox x:Name="SummonerNameTextBox" Text="{Binding SummonerName}" PlaceholderText="Search for summoner..." 
-                 FontSize="{x:Bind FontSize}" Width="500" Background="#00007d"
+        <TextBox Grid.Column="1" x:Name="SummonerNameTextBox" Text="{Binding SummonerName}" PlaceholderText="Search for summoner..." 
+                 FontSize="{x:Bind FontSize}" Background="#00007d"
                  CornerRadius="0" Margin="0" />
-        <Button x:Name="SearchButton" Content="&#xE721;" FontSize="{x:Bind FontSize}" FontFamily="Segoe MDL2 Assets" 
-                Margin="0" />
-    </StackPanel>
+        <Button Grid.Column="2" x:Name="SearchButton" Content="&#xE721;" FontSize="{x:Bind FontSize}" FontFamily="Segoe MDL2 Assets" 
+                Margin="0" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="-1" />
+            </Button.RenderTransform>
+        </Button>
+    </Grid>
 </UserControl>

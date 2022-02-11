@@ -9,8 +9,8 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image Source="{x:Bind ImageSource}" Height="300" HorizontalAlignment="Center" Width="300" Margin="12"/>
-            <TextBlock Text="{x:Bind ReasonPhrase}" Style="{StaticResource SubtitleTextBlockStyle}" />
+            <Image Source="{x:Bind ImageSource, Mode=OneWay}" Height="300" HorizontalAlignment="Center" Width="300" Margin="12"/>
+            <TextBlock Text="{x:Bind ReasonPhrase, Mode=OneWay}" Style="{StaticResource SubtitleTextBlockStyle}" />
         </StackPanel>
     </Grid>
 </UserControl>

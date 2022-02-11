@@ -5,6 +5,7 @@
     xmlns:local="using:MasteriesQuest"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MasteriesQuest.Controls"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -23,7 +24,13 @@
                 <AutoSuggestBox x:Name="AutoSuggestBoxControl" QueryIcon="Find" AutomationProperties.Name="Search" PlaceholderText="Search for summoner..."
                                 TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
             </NavigationView.AutoSuggestBox>
-        
+
+            <NavigationView.PaneCustomContent>
+                <Grid Padding="12,0">                    
+                    <controls:SummonerSearchBox />
+                </Grid>
+            </NavigationView.PaneCustomContent>
+
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage" IsSelected="True" />
                 <NavigationViewItem Icon="World" Content="Highscores" Tag="HighscoresPage" />

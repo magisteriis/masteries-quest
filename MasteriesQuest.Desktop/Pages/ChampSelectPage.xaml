@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MasteriesQuest.Pages"
     xmlns:viewModels="using:MasteriesQuest.ViewModels"
+    xmlns:controls="using:MasteriesQuest.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -70,5 +71,7 @@
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
         </ScrollViewer>
+        <controls:Loading x:Name="Loading" IsLoading="True" />
+        <controls:Error x:Name="Error" />
     </Grid>
 </Page>

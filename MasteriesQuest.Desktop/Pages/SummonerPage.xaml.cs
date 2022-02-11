@@ -59,26 +59,16 @@ namespace MasteriesQuest.Pages
                         {
                             Summoner.Populate(masteries);
                             SummonerGrid.Visibility = Visibility.Visible;
-                            LoadingControl.IsLoading = false;
+                            Loading.IsLoading = false;
                         });
                     }
                 }
-                catch (HttpRequestException ex)
+                catch (Exception ex)
                 {
                     DispatcherQueue.TryEnqueue(() =>
                     {
-                        LoadingControl.IsLoading = false;
-                        Error.Reason = ex.Message.Contains("429") ? Controls.ErrorReason.RateLimit : Controls.ErrorReason.NotFound;
-                        Error.Show();
-                    });
-                }
-                catch (Exception)
-                {
-                    DispatcherQueue.TryEnqueue(() =>
-                    {
-                        LoadingControl.IsLoading = false;
-                        Error.Reason = Controls.ErrorReason.Error;
-                        Error.Show();
+                        Loading.IsLoading = false;
+                        Error.Show(ex);
                     });
                 }
             });

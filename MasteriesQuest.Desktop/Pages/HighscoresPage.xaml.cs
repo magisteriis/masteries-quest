@@ -36,17 +36,31 @@ namespace MasteriesQuest.Pages
         {
             _ = Task.Run(async () =>
             {
-                using ChampionMasteryGgClient client = new();
-                var highscores = await client.GetHighscoresAsync();
-                DispatcherQueue.TryEnqueue(() =>
+                try
                 {
-                    //foreach (var highscore in highscores.TotalPoints)
-                    //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
-                    //foreach (var highscore in highscores.TotalLevel)
-                    //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
-                    foreach (var championHighscores in highscores.Champions)
-                        HighscoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
-                });
+                    using ChampionMasteryGgClient client = new();
+                    var highscores = await client.GetHighscoresAsync();
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        //foreach (var highscore in highscores.TotalPoints)
+                        //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
+                        //foreach (var highscore in highscores.TotalLevel)
+                        //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
+                        foreach (var championHighscores in highscores.Champions)
+                            HighscoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
+
+                        Loading.IsLoading = false;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    LcuHelper.LastGameId = -1;
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        Loading.IsLoading = false;
+                        Error.Show(ex);
+                    });
+                }
             });
         }
     }

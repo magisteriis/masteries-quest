@@ -21,15 +21,7 @@
             </StackPanel>
             <controls:MasteriesGrid Grid.Row="1" Margin="0,12,0,0" MasteriesSource="{x:Bind Summoner.Masteries}" />
         </Grid>
-        <ct:Loading x:Name="LoadingControl" IsLoading="True">
-            <ct:Loading.Background>
-                <AcrylicBrush TintColor="Navy" TintOpacity="0.4" />
-            </ct:Loading.Background>
-            <StackPanel Orientation="Horizontal" Padding="12">
-                <ProgressRing IsActive="True" Margin="0,0,12,0" Foreground="White" />
-                <TextBlock Text="Feeding poros, please wait..." VerticalAlignment="Center" Foreground="White" />
-            </StackPanel>
-        </ct:Loading>
+        <controls:Loading x:Name="Loading" IsLoading="True" />
         <controls:Error x:Name="Error" />
     </Grid>
 </Page>

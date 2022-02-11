@@ -10,24 +10,26 @@ namespace MasteriesQuest
 {
     internal static class Emotes
     {
-        public static Uri CrushedIt(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/CrushedIt.png", depth);
-        public static Uri DoesNotCompute(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/DoesNotCompute.png", depth);
-        public static Uri Hmm(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/Hmm.png", depth);
-        public static Uri Hooray(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/Hooray.png", depth);
-        public static Uri LookingForThis(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/LookingForThis.png", depth);
-        public static Uri NeverAgain(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/NeverAgain.png", depth);
-        public static Uri OhNo(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/OhNo.png", depth);
-        public static Uri Oops(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/Oops.png", depth);
-        public static Uri Pwease(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/Pwease.png", depth);
-        public static Uri TearyEyes(byte depth = 0) => _relativeImage("ms-appx:///Assets/Emotes/TearyEyes.png", depth);
+        // TODO: partial, one for Desktop and one for Web.
+        public static readonly string Directory = "ms-appx:///Assets/Emotes/";
+        public static Uri CrushedIt => _relativeImage("CrushedIt.png");
+        public static Uri DoesNotCompute => _relativeImage("DoesNotCompute.png");
+        public static Uri Hmm => _relativeImage("Hmm.png");
+        public static Uri Hooray => _relativeImage("Hooray.png");
+        public static Uri LookingForThis => _relativeImage("LookingForThis.png");
+        public static Uri NeverAgain => _relativeImage("NeverAgain.png");
+        public static Uri OhNo => _relativeImage("OhNo.png");
+        public static Uri Oops => _relativeImage("Oops.png");
+        public static Uri Pwease => _relativeImage("Pwease.png");
+        public static Uri TearyEyes => _relativeImage("TearyEyes.png");
 
-        public static Func<byte, Uri>[] NotFound => new Func<byte, Uri>[]
+        public static Uri[] NotFound => new Uri[]
         {
             DoesNotCompute,
             LookingForThis
         };
 
-        public static Func<byte, Uri>[] Error => new Func<byte, Uri>[]
+        public static Uri[] Error => new Uri[]
         {
             Hmm,
             NeverAgain,
@@ -35,12 +37,12 @@ namespace MasteriesQuest
             Oops
         };
 
-        public static Func<byte, Uri>[] RateLimit => new Func<byte, Uri>[]
+        public static Uri[] RateLimit => new Uri[]
         {
             Pwease,
             TearyEyes
         };
 
-        private static Uri _relativeImage(string relativeUri, byte depth) => new(relativeUri, UriKind.RelativeOrAbsolute);
+        private static Uri _relativeImage(string relativeUri) => new(Path.Combine(Directory, relativeUri), UriKind.RelativeOrAbsolute);
     }
 }
