@@ -37,9 +37,9 @@ namespace MasteriesQuest.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _ = Task.Run(async () =>
+            if (e.Parameter is string[] summonerNames)
             {
-                if (e.Parameter is string[] summonerNames)
+                _ = Task.Run(async () =>
                 {
                     DispatcherQueue.TryEnqueue(() => MainGrid.Background = new SolidColorBrush(LcuHelper.TeamId == 1 ? Colors.Navy : Colors.DarkRed));
                     try
@@ -56,8 +56,8 @@ namespace MasteriesQuest.Pages
                             Error.Show(ex);
                         });
                     }
-                }
-            });
+                });
+            }
         }
 
         private async Task _setSummonersAsync(params string[] summoners)
