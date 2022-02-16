@@ -12,7 +12,7 @@ namespace MasteriesQuest.ViewModels
         public async Task LoadAsync(DispatcherQueue dispatcherQueue, Server server)
         {
             if (_loadCancellationTokenSource.IsCancellationRequested)
-                _loadCancellationTokenSource = new();
+                _loadCancellationTokenSource = new CancellationTokenSource();
 
             SpectatorFeaturedGames featuredGames;
             using (var client = new LeagueOfLegendsClient("github", server))
@@ -30,17 +30,15 @@ namespace MasteriesQuest.ViewModels
                 foreach (var serverGames in FeaturedGames.GroupBy(g => g.Server)) // While on dev token
                 {
                     _loadCancellationTokenSource.Token.ThrowIfCancellationRequested();
-                    using (var client = new LeagueOfLegendsClient("github", serverGames.Key))
+                    using var client = new LeagueOfLegendsClient("github", serverGames.Key);
+                    foreach (var participant in serverGames.SelectMany(sg => sg).SelectMany(g => g))
                     {
-                        foreach(var participant in serverGames.SelectMany(sg => sg).SelectMany(g => g))
-                        {
-                            var summoner = await client.GetSummonerByNameAsync(participant.Name, _loadCancellationTokenSource.Token);
-                            var masteries = await client.GetChampionMasteryAsync((long)participant.ChampionId, summoner.Id, _loadCancellationTokenSource.Token);
+                        var summoner = await client.GetSummonerByNameAsync(participant.Name, _loadCancellationTokenSource.Token);
+                        var masteries = await client.GetChampionMasteryAsync((long)participant.ChampionId, summoner.Id, _loadCancellationTokenSource.Token);
 
-                            dispatcherQueue.TryEnqueue(() => participant.Populate(masteries));
+                        dispatcherQueue.TryEnqueue(() => participant.Populate(masteries));
 
-                            await Task.Delay(500, _loadCancellationTokenSource.Token); // While on dev token
-                        }
+                        await Task.Delay(500, _loadCancellationTokenSource.Token); // While on dev token
                     }
                 }
             }

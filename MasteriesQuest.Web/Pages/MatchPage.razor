@@ -1,6 +1,6 @@
-﻿@page "/{serverAbbrevation}/matches/{matchId:long}" // Match in past
-@page "/{serverAbbrevation}/matches/{matchId:long}/{summonerNames}" // Active match
-@page "/{serverAbbrevation}/matches/{summonerNames}" // Champ select
+﻿@page "/{ServerAbbreviation}/matches/{matchId:long}" // Match in past
+@page "/{ServerAbbreviation}/matches/{matchId:long}/{summonerNames}" // Active match
+@page "/{ServerAbbreviation}/matches/{summonerNames}" // Champ select
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
@@ -23,7 +23,7 @@
 
 @code {
     [Parameter]
-    public string? ServerAbbrevation { get; set; }
+    public string? ServerAbbreviation { get; set; }
 
     [Parameter]
     public long? MatchId { get; set; }
@@ -37,7 +37,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (ServerAbbrevation == null || !Server.TryParse(ServerAbbrevation, out var server))
+        if (ServerAbbreviation == null || !Server.TryParse(ServerAbbreviation, out var server))
             throw new FormatException("Server name doesn't have a valid format.");
 
         if (MatchId == null)

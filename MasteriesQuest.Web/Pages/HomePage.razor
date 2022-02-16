@@ -1,5 +1,5 @@
 ﻿@page "/"
-@page "/{serverAbbrevation}"
+@page "/{ServerAbbreviation}"
 @implements IDisposable
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
@@ -21,7 +21,7 @@
             <div class="card-columns">
                 @foreach (var game in _featuredGames)
                 {
-                    var matchLink = $"/{ServerAbbrevation}/matches/{game.GameId}/{string.Join(',', game.Participants.GroupBy(p => p.TeamId).First().Select(p => Uri.EscapeDataString(p.SummonerName)))}";
+                    var matchLink = $"/{ServerAbbreviation}/matches/{game.GameId}/{string.Join(',', game.Participants.GroupBy(p => p.TeamId).First().Select(p => Uri.EscapeDataString(p.SummonerName)))}";
                     <div class="card">
                         <h3 class="card-header"><a href="@matchLink">@game.GameMode</a></h3>
                         <div class="card-body">
@@ -67,7 +67,7 @@
 @code {
 
     [Parameter]
-    public string? ServerAbbrevation { get; set; }
+    public string? ServerAbbreviation { get; set; }
 
     private CancellationTokenSource _loadFeaturedGamesCancellationToken = new CancellationTokenSource();
 
@@ -77,15 +77,15 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (ServerAbbrevation == null)
+        if (ServerAbbreviation == null)
         {
             var savedPlatform = await localStorage.GetItemAsync<PlatformRoute?>("region");
             NavManager.NavigateTo(savedPlatform ?? Server.NA);
             return;
         }
-        else if (Server.TryParse(ServerAbbrevation, out var server))
+        else if (Server.TryParse(ServerAbbreviation, out var server))
         {
-            if (ServerAbbrevation != server.Abbreviation.ToLower())
+            if (ServerAbbreviation != server.Abbreviation.ToLower())
             {
                 NavManager.NavigateTo(server);
                 return;

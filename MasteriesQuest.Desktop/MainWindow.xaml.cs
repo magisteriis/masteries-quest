@@ -47,11 +47,10 @@ namespace MasteriesQuest
             else
             {
                 var selectedItem = (NavigationViewItem)args.SelectedItem;
-                if (selectedItem != null)
                 {
-                    string selectedItemTag = ((string)selectedItem.Tag);
-                    string pageName = "MasteriesQuest.Pages." + selectedItemTag;
-                    Type pageType = Type.GetType(pageName);
+                    var selectedItemTag = ((string)selectedItem.Tag);
+                    var pageName = "MasteriesQuest.Pages." + selectedItemTag;
+                    var pageType = Type.GetType(pageName);
                     contentFrame.Navigate(pageType);
                 }
             }

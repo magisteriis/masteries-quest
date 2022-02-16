@@ -48,10 +48,10 @@ namespace MasteriesQuest
             ChampionMasteryGgClient.BaseAddress = "https://masteries.quest/api/highscores/";
             ChampionMasteryGgClient.Encoding = ChampionMasteryGgEncoding.Json;
             
-            m_window = new MainWindow();
-            m_window.Activate();
+            _window = new MainWindow();
+            _window.Activate();
         }
 
-        private Window m_window;
+        private Window _window;
     }
 }

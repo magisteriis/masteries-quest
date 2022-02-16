@@ -10,23 +10,23 @@
         <i class="fa fa-bars"></i>
     </button>
 
-    <EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit"
+    <EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="input-group">
             <div class="input-group-prepend">
-                <InputSelect name="summoner-region" @bind-Value="summonerSearch.Platform" class="form-control" 
+                <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control" 
                     style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" DisplayName="Server">
-                    @foreach(var server in summonerSearch.Servers)
+                    @foreach(var server in _summonerSearch.Servers)
                     {
-                        string optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
+                        var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
                         <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>                        
                     }
                 </InputSelect>
             </div>
             <InputText name="summoner-name" class="form-control" aria-label="Search" aria-describedby="basic-addon2"
-                @bind-Value="summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
+                @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
             <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search fa-sm"></i>
@@ -47,23 +47,23 @@
             <!-- Dropdown - Search -->
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                 aria-labelledby="searchDropdown">
-                <EditForm Model="@summonerSearch" OnValidSubmit="@HandleValidSubmit"
+                <EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
                     class="form-inline mr-auto w-100 navbar-search">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <InputSelect name="summoner-region" @bind-Value="summonerSearch.Platform" class="form-control bg-light border-0 small" 
+                            <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control bg-light border-0 small" 
                                 style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" DisplayName="Server">
                                 @foreach(var server in Server.All.Where(s => s != Server.PBE))
                                 {
-                                    string optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
+                                    var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
                                     <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>                        
                                 }
                             </InputSelect>
                         </div>
                         <InputText name="summoner-name" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"
-                            @bind-Value="summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
+                            @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-search fa-sm"></i>
@@ -223,32 +223,32 @@
 
 
 @code {
-    private SummonerSearchViewModel summonerSearch = new();
+    private SummonerSearchViewModel _summonerSearch = new();
 
     protected override async Task OnInitializedAsync()
     {
         var savedRegion = await localStorage.GetItemAsync<PlatformRoute?>("region");
         if (savedRegion != null)
-            summonerSearch.Platform = (PlatformRoute)savedRegion;
+            _summonerSearch.Platform = (PlatformRoute)savedRegion;
     }
 
     private async Task HandleValidSubmit()
     {
-        if (summonerSearch.SummonerName == null)
+        if (_summonerSearch.SummonerName == null)
             return;
 
-        _ = localStorage.SetItemAsync("region", summonerSearch.Platform);
+        _ = localStorage.SetItemAsync("region", _summonerSearch.Platform);
 
-        var summoner = await localStorage.GetSummonerAsync(summonerSearch.Platform, summonerSearch.SummonerName);
+        var summoner = await localStorage.GetSummonerAsync(_summonerSearch.Platform, _summonerSearch.SummonerName);
 
         if (summoner == null)
-            using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", summonerSearch.Platform))
+            using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", _summonerSearch.Platform))
             {
-                summoner = await client.GetSummonerByNameAsync(summonerSearch.SummonerName);
-                await localStorage.SetSummonerAsync(summonerSearch.Platform, summoner);
+                summoner = await client.GetSummonerByNameAsync(_summonerSearch.SummonerName);
+                await localStorage.SetSummonerAsync(_summonerSearch.Platform, summoner);
             }
 
-        NavManager.NavigateTo(summonerSearch.Platform, summoner);
-        summonerSearch.SummonerName = null;
+        NavManager.NavigateTo(_summonerSearch.Platform, summoner);
+        _summonerSearch.SummonerName = null;
     }
 }

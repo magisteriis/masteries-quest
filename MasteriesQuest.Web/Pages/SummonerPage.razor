@@ -1,12 +1,12 @@
-﻿@page "/{serverAbbrevation}/{summonerName}"
+﻿@page "/{ServerAbbreviation}/{summonerName}"
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
 @using RiotGames.LeagueOfLegends
 
-<PageTitle>@SummonerName (@ServerAbbrevation?.ToUpper()) | The Masteries Quest 🏆</PageTitle>
+<PageTitle>@SummonerName (@ServerAbbreviation?.ToUpper()) | The Masteries Quest 🏆</PageTitle>
 
-<h1 class="h3 mb-2 text-gray-800">@SummonerName (@ServerAbbrevation?.ToUpper())</h1>
+<h1 class="h3 mb-2 text-gray-800">@SummonerName (@ServerAbbreviation?.ToUpper())</h1>
 <p class="mb-4">Level: @SummonerLevel</p>
 
 @if (@masteries != null) 
@@ -137,7 +137,7 @@
 
 @code {
     [Parameter]
-    public string? ServerAbbrevation { get; set; }
+    public string? ServerAbbreviation { get; set; }
 
     [Parameter]
     public string? SummonerName { get; set; }
@@ -167,7 +167,7 @@
 
     private async Task Search()
     {
-        if (string.IsNullOrWhiteSpace(ServerAbbrevation) || string.IsNullOrWhiteSpace(SummonerName))
+        if (string.IsNullOrWhiteSpace(ServerAbbreviation) || string.IsNullOrWhiteSpace(SummonerName))
         {
             NavManager.NavigateTo("/", replace: true);
             return;
@@ -175,7 +175,7 @@
 
         masteries = null;
 
-        if (!Server.TryParse(ServerAbbrevation, out var server))
+        if (!Server.TryParse(ServerAbbreviation, out var server))
             throw new FormatException("Server name doesn't have a valid format.");
 
         using (LeagueOfLegendsClient client = new("github", server))
@@ -188,7 +188,7 @@
                 await localStorage.SetSummonerAsync(server, summoner);
             }
 
-            if (SummonerName != summoner.Name || ServerAbbrevation != server.Abbreviation.ToLower())
+            if (SummonerName != summoner.Name || ServerAbbreviation != server.Abbreviation.ToLower())
             {
                 NavManager.NavigateTo(server, summoner, replace: true);
                 return;
