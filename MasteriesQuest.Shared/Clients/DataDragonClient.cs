@@ -1,29 +1,25 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Json;
+﻿namespace MasteriesQuest.Clients;
 
-namespace MasteriesQuest.Clients
-{
-    //public sealed class DataDragonClient : IDisposable
-    //{
-    //    private HttpClient _httpClient;
 
-    //    public DataDragonClient()
-    //    {
-    //        _httpClient = new HttpClient();
-    //    }
+//public sealed class DataDragonClient : IDisposable
+//{
+//    private HttpClient _httpClient;
 
-    //    //public async Task<Champion[]?> GetChampionsAsync()
-    //    //{
-    //    //    var result = await _httpClient.GetFromJsonAsync<ChampionResult>("http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json");
-    //    //    return result?.Data?.Values?.ToArray();
-    //    //}
+//    public DataDragonClient()
+//    {
+//        _httpClient = new HttpClient();
+//    }
 
-    //    public void Dispose() => _httpClient.Dispose();
+//    //public async Task<Champion[]?> GetChampionsAsync()
+//    //{
+//    //    var result = await _httpClient.GetFromJsonAsync<ChampionResult>("http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json");
+//    //    return result?.Data?.Values?.ToArray();
+//    //}
 
-    //    //private class ChampionResult
-    //    //{
-    //    //    public Dictionary<string, Champion>? Data { get; set; }
-    //    //}
-    //}
-}
+//    public void Dispose() => _httpClient.Dispose();
+
+//    //private class ChampionResult
+//    //{
+//    //    public Dictionary<string, Champion>? Data { get; set; }
+//    //}
+//}

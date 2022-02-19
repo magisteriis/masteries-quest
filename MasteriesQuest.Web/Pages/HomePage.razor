@@ -1,9 +1,9 @@
 ﻿@page "/"
 @page "/{ServerAbbreviation}"
+@using RiotGames.LeagueOfLegends
 @implements IDisposable
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
-@using RiotGames.LeagueOfLegends
 
 <PageTitle>The Masteries Quest 🏆</PageTitle>
 
@@ -23,21 +23,25 @@
                 {
                     var matchLink = $"/{ServerAbbreviation}/matches/{game.GameId}/{string.Join(',', game.Participants.GroupBy(p => p.TeamId).First().Select(p => Uri.EscapeDataString(p.SummonerName)))}";
                     <div class="card">
-                        <h3 class="card-header"><a href="@matchLink">@game.GameMode</a></h3>
+                        <h3 class="card-header">
+                            <a href="@matchLink">@game.GameMode</a>
+                        </h3>
                         <div class="card-body">
                             <div class="row">
                                 @foreach (var teamId in game.Participants.Select(p => p.TeamId).Distinct())
                                 {
-                                    bool blueTeam = teamId == game.Participants.Select(p => p.TeamId).First();
-                                    string backgroundColor = blueTeam ? "rgba(0, 34, 89)" : "rgba(89, 0, 0)";
+                                    var blueTeam = teamId == game.Participants.Select(p => p.TeamId).First();
+                                    var backgroundColor = blueTeam ? "rgba(0, 34, 89)" : "rgba(89, 0, 0)";
                                     <div class="list-group col p-0" style="border-top: .25rem solid @backgroundColor">
                                         @foreach (var participant in game.Participants.Where(p => p.TeamId == teamId))
                                         {
                                             Server.TryParse(game.PlatformId, out var server);
                                             var link = $"/{server.Abbreviation.ToLower()}/{participant.SummonerName}";
                                             <a href="@link" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                                @if(!blueTeam) 
+                                                @if (!blueTeam)
+                                                {
                                                     @participant.SummonerName
+                                                }
 
                                                 @if (_masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
                                                 {
@@ -47,9 +51,11 @@
                                                 {
                                                     <span class="badge badge-secondary badge-pill">Loading...</span>
                                                 }
-                                                
-                                                @if(blueTeam) 
+
+                                                @if (blueTeam)
+                                                {
                                                     @participant.SummonerName
+                                                }
                                             </a>
                                         }
                                     </div>
@@ -69,9 +75,9 @@
     [Parameter]
     public string? ServerAbbreviation { get; set; }
 
-    private CancellationTokenSource _loadFeaturedGamesCancellationToken = new CancellationTokenSource();
+    private readonly CancellationTokenSource _loadFeaturedGamesCancellationToken = new();
 
-    Dictionary<(string region, string summonerName), int> _masteryPoints = new Dictionary<(string region, string summonerName), int>();
+    readonly Dictionary<(string region, string summonerName), int> _masteryPoints = new();
 
     LeagueOfLegendsReadOnlyCollection<SpectatorFeaturedGameInfo>? _featuredGames;
 
@@ -83,15 +89,14 @@
             NavManager.NavigateTo(savedPlatform ?? Server.NA);
             return;
         }
-        else if (Server.TryParse(ServerAbbreviation, out var server))
+        if (Server.TryParse(ServerAbbreviation, out var server))
         {
             if (ServerAbbreviation != server.Abbreviation.ToLower())
             {
                 NavManager.NavigateTo(server);
                 return;
             }
-            else
-                await LoadFeaturedGamesAsync(server);
+            await LoadFeaturedGamesAsync(server);
         }
         else
             NavManager.NavigateTo(Server.NA);
@@ -113,7 +118,7 @@
                 try
                 {
                     foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId)) // While on dev token
-                    {
+                {
                         _loadFeaturedGamesCancellationToken.Token.ThrowIfCancellationRequested();
                         using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
                         {
@@ -124,17 +129,23 @@
 
                                 _masteryPoints.Add((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
 
-                                base.StateHasChanged();
+                                StateHasChanged();
 
                                 await Task.Delay(500, _loadFeaturedGamesCancellationToken.Token); // While on dev token
-                            }
+                        }
                         }
                     }
                 }
-                catch { }
+                catch
+                {
+                // Ignore
+            }
             }, _loadFeaturedGamesCancellationToken.Token);
         }
-        catch { }
+        catch
+        {
+            // Ignore
+        }
     }
 
     public void Dispose()
@@ -142,4 +153,5 @@
         _loadFeaturedGamesCancellationToken.Cancel();
         _loadFeaturedGamesCancellationToken.Dispose();
     }
+
 }

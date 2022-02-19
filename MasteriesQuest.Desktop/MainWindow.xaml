@@ -2,7 +2,6 @@
     x:Class="MasteriesQuest.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MasteriesQuest"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:MasteriesQuest.Controls"
@@ -13,20 +12,22 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid x:Name="AppTitleBar" Margin="0,0,120,0" Padding="0,12" Background="Navy">
-            <Image Source="Assets/Square44x44Logo.png" HorizontalAlignment="Left" Width="24" Height="24" Margin="12,0"/>
+            <Image Source="Assets/Square44x44Logo.png" HorizontalAlignment="Left" Width="24" Height="24" Margin="12,0" />
             <TextBlock x:Name="AppTitleTextBlock" Text="The Masteries Quest" FontSize="18"
-               Style="{StaticResource CaptionTextBlockStyle}" 
-               Margin="48,0,0,0" VerticalAlignment="Center"/>
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Margin="48,0,0,0" VerticalAlignment="Center" />
         </Grid>
 
-        <NavigationView Grid.Row="1" x:Name="MainNavigationView" IsBackButtonVisible="Collapsed" SelectionChanged="MainNavigationView_SelectionChanged" Background="Navy">
+        <NavigationView Grid.Row="1" x:Name="MainNavigationView" IsBackButtonVisible="Collapsed"
+                        SelectionChanged="MainNavigationView_SelectionChanged" Background="Navy">
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="AutoSuggestBoxControl" QueryIcon="Find" AutomationProperties.Name="Search" PlaceholderText="Search for summoner..."
+                <AutoSuggestBox x:Name="AutoSuggestBoxControl" QueryIcon="Find" AutomationProperties.Name="Search"
+                                PlaceholderText="Search for summoner..."
                                 TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.PaneCustomContent>
-                <Grid Padding="12,0">                    
+                <Grid Padding="12,0">
                     <controls:SummonerSearchBox />
                 </Grid>
             </NavigationView.PaneCustomContent>
@@ -35,7 +36,7 @@
                 <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage" IsSelected="True" />
                 <NavigationViewItem Icon="World" Content="Highscores" Tag="HighscoresPage" />
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame"/>
+            <Frame x:Name="contentFrame" />
         </NavigationView>
     </Grid>
 </Window>

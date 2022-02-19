@@ -1,16 +1,17 @@
 ﻿@page "/highscores/{championName}"
 @using ChampionMasteryGg
+@using Champion = Camille.Enums.Champion
 
 
 <h3>@ChampionName</h3>
 
 <div class="list-group animated--grow-in">
     <div class="list-group">
-        @for(int i = 0; i < _highScores.Count; i++)
+        @for (var i = 0; i < _highScores.Count; i++)
         {
             var entry = _highScores[i];
-            string link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
-            <a href="@link" id="@(i+1)" class="list-group-item list-group-item-action">#@(i+1) - @entry.SummonerName - @string.Format("{0:n0}", entry.Score)</a>
+            var link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
+            <a href="@link" id="@(i + 1)" class="list-group-item list-group-item-action">#@(i + 1) - @entry.SummonerName - @string.Format("{0:n0}", entry.Score)</a>
         }
     </div>
 </div>
@@ -20,7 +21,7 @@
     [Parameter]
     public string? ChampionName { get; set; }
 
-    private List<HighscoreEntryViewModel> _highScores { get; set; } = new List<HighscoreEntryViewModel>();
+    private List<HighscoreEntryViewModel> _highScores { get; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,7 +29,7 @@
             return;
 
         using ChampionMasteryGgClient client = new();
-        var highScores = await client.GetHighscoresAsync((int)Enum.Parse<Camille.Enums.Champion>(ChampionName, true));
+        var highScores = await client.GetHighscoresAsync((int) Enum.Parse<Champion>(ChampionName, true));
 
         foreach (var entry in highScores)
             _highScores.Add(new HighscoreEntryViewModel(entry));

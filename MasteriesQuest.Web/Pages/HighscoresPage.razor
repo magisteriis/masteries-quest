@@ -4,16 +4,16 @@
 <h3>Highscores</h3>
 
 <div class="card-columns animated--grow-in">
-    @foreach(var championHighscores in _highScoresOverview.Champions)
+    @foreach (var championHighscores in _highScoresOverview.Champions)
     {
-        string champLink = $"/highscores/{championHighscores.ChampionName.ToLower()}";
+        var champLink = $"/highscores/{championHighscores.ChampionName.ToLower()}";
         <div class="card">
             <a href="@champLink" class="card-header">@championHighscores.ChampionName</a>
             <div class="card-body">
                 <div class="list-group">
-                    @foreach(var entry in championHighscores.Highscores)
+                    @foreach (var entry in championHighscores.Highscores)
                     {
-                        string link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
+                        var link = $"/{entry.Server.Abbreviation.ToLower()}/{entry.SummonerName}";
                         <a href="@link" class="list-group-item list-group-item-action">@entry.SummonerName - @string.Format("{0:n0}", entry.Score)</a>
                     }
                 </div>
@@ -24,19 +24,19 @@
 
 @code {
 
-    private HighscoresOverviewViewModel _highScoresOverview { get; set; } = new HighscoresOverviewViewModel();
+    private HighscoresOverviewViewModel _highScoresOverview { get; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         using ChampionMasteryGgClient client = new();
         var highScores = await client.GetHighscoresAsync();
 
-            //foreach (var highscore in highscores.TotalPoints)
-            //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
-            //foreach (var highscore in highscores.TotalLevel)
-            //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
-            foreach (var championHighscores in highScores.Champions)
-                _highScoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
+    //foreach (var highscore in highscores.TotalPoints)
+    //    HighscoresOverview.TotalPoints.Add(new HighscoreEntryViewModel(highscore));
+    //foreach (var highscore in highscores.TotalLevel)
+    //    HighscoresOverview.TotalLevel.Add(new HighscoreEntryViewModel(highscore));
+        foreach (var championHighscores in highScores.Champions)
+            _highScoresOverview.Champions.Add(new ChampionHighscoresViewModel(championHighscores));
     }
 
 }

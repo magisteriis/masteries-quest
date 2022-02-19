@@ -1,79 +1,108 @@
-﻿using RiotGames.LeagueOfLegends;
-using System.Collections;
+﻿using System.Collections;
+using RiotGames.LeagueOfLegends;
 
-namespace MasteriesQuest.ViewModels
+namespace MasteriesQuest.ViewModels;
+
+public partial class FeaturedGamesViewModel : ObservableObject
 {
-    public partial class FeaturedGamesViewModel : ObservableObject
+    private CancellationTokenSource _loadCancellationTokenSource = new();
+
+    public ObservableCollection<MatchViewModel> FeaturedGames { get; set; } = new();
+
+    public void CancelLoad()
     {
-        private CancellationTokenSource _loadCancellationTokenSource = new();
+        _loadCancellationTokenSource.Cancel();
+    }
+}
 
-        public ObservableCollection<MatchViewModel> FeaturedGames { get; set; } = new();
+public class MatchViewModel : ObservableObject, IEnumerable<TeamViewModel>
+{
+    private SpectatorFeaturedGameInfo _game;
+    private Server? _server;
 
-        public void CancelLoad() => _loadCancellationTokenSource.Cancel();
+    public MatchViewModel(SpectatorFeaturedGameInfo game)
+    {
+        _game = game;
+        Server = Server.Parse(game.PlatformId);
+        var teams = game.Participants.GroupBy(p => p.TeamId);
+        foreach (var team in teams)
+            Teams.Add(new TeamViewModel(team));
     }
 
-    public class MatchViewModel : ObservableObject, IEnumerable<TeamViewModel>
+    public Server? Server
     {
-        private Server? _server;
-        private SpectatorFeaturedGameInfo _game;
-
-        public MatchViewModel(SpectatorFeaturedGameInfo game)
-        {
-            this._game = game;
-            Server = Server.Parse(game.PlatformId);
-            var teams = game.Participants.GroupBy(p => p.TeamId);
-            foreach (var team in teams)
-                Teams.Add(new TeamViewModel(team));
-        }
-
-        public Server? Server { get => _server; set => SetProperty(ref _server, value); }
-
-        public ObservableCollection<TeamViewModel> Teams { get; set; } = new();
-
-        public IEnumerator<TeamViewModel> GetEnumerator() => ((IEnumerable<TeamViewModel>)Teams).GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Teams).GetEnumerator();
+        get => _server;
+        set => SetProperty(ref _server, value);
     }
 
-    public class TeamViewModel : ObservableObject, IEnumerable<ParticipantViewModel>
+    public ObservableCollection<TeamViewModel> Teams { get; set; } = new();
+
+    public IEnumerator<TeamViewModel> GetEnumerator()
     {
-        private IGrouping<long, SpectatorParticipant> _team;
-
-        public TeamViewModel(IGrouping<long, SpectatorParticipant> team)
-        {
-            this._team = team;
-            TeamId = team.Key;
-            foreach(var participant in team)
-                Participants.Add(new ParticipantViewModel(participant));
-        }
-
-        public long? TeamId { get; set; }
-
-        public ObservableCollection<ParticipantViewModel> Participants { get; set; } = new();
-
-        public IEnumerator<ParticipantViewModel> GetEnumerator() => ((IEnumerable<ParticipantViewModel>)Participants).GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Participants).GetEnumerator();
+        return ((IEnumerable<TeamViewModel>) Teams).GetEnumerator();
     }
 
-    public class ParticipantViewModel : SummonerViewModel
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        private long? _championPoints;
-        private long? _championId;
+        return ((IEnumerable) Teams).GetEnumerator();
+    }
+}
 
-        public ParticipantViewModel(string name) : base(name)
-        {
-        }
+public class TeamViewModel : ObservableObject, IEnumerable<ParticipantViewModel>
+{
+    private IGrouping<long, SpectatorParticipant> _team;
 
-        public ParticipantViewModel(SpectatorParticipant spectatorParticipant) : base(spectatorParticipant.SummonerName)
-        {
-            ChampionId = spectatorParticipant.ChampionId;
-        }
+    public TeamViewModel(IGrouping<long, SpectatorParticipant> team)
+    {
+        _team = team;
+        TeamId = team.Key;
+        foreach (var participant in team)
+            Participants.Add(new ParticipantViewModel(participant));
+    }
 
-        public long? ChampionId { get => _championId; set => SetProperty(ref _championId, value); }
+    public long? TeamId { get; set; }
 
-        public long? ChampionPoints { get => _championPoints; set => SetProperty(ref _championPoints, value); }
+    public ObservableCollection<ParticipantViewModel> Participants { get; set; } = new();
 
-        public void Populate(ChampionMastery championMastery) => ChampionPoints = championMastery.ChampionPoints;
+    public IEnumerator<ParticipantViewModel> GetEnumerator()
+    {
+        return ((IEnumerable<ParticipantViewModel>) Participants).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable) Participants).GetEnumerator();
+    }
+}
+
+public class ParticipantViewModel : SummonerViewModel
+{
+    private long? _championId;
+    private long? _championPoints;
+
+    public ParticipantViewModel(string name) : base(name)
+    {
+    }
+
+    public ParticipantViewModel(SpectatorParticipant spectatorParticipant) : base(spectatorParticipant.SummonerName)
+    {
+        ChampionId = spectatorParticipant.ChampionId;
+    }
+
+    public long? ChampionId
+    {
+        get => _championId;
+        set => SetProperty(ref _championId, value);
+    }
+
+    public long? ChampionPoints
+    {
+        get => _championPoints;
+        set => SetProperty(ref _championPoints, value);
+    }
+
+    public void Populate(ChampionMastery championMastery)
+    {
+        ChampionPoints = championMastery.ChampionPoints;
     }
 }

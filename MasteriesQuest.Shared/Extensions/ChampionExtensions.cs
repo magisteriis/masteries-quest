@@ -1,10 +1,16 @@
 ﻿using Camille.Enums;
 
-namespace MasteriesQuest
+namespace MasteriesQuest;
+
+public static class RandomExtensions
 {
-    public static class RandomExtensions
+    public static Champion ToChampion(this long i)
     {
-        public static Champion ToChampion(this long i) => (Champion)i;
-        public static string ToUnicode(this bool b) => b ? "✅" : "❌";
+        return (Champion) i;
+    }
+
+    public static string ToUnicode(this bool b)
+    {
+        return b ? "✅" : "❌";
     }
 }

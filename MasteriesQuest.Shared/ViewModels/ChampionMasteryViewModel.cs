@@ -1,70 +1,66 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Humanizer;
 using RiotGames.LeagueOfLegends;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Humanizer;
 
-namespace MasteriesQuest.ViewModels
+namespace MasteriesQuest.ViewModels;
+
+public class ChampionMasteryViewModel : ObservableObject
 {
-    public class ChampionMasteryViewModel : ObservableObject
-    {
-        private ChampionMastery _mastery;
+    private string _champion;
+
+    private bool? _isChestGranted;
+
+    private string _lastPlayed;
+
+    private byte _level;
+
+    private string _points;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ChampionMasteryViewModel(ChampionMastery mastery) => Populate(mastery);
+    public ChampionMasteryViewModel(ChampionMastery mastery)
+    {
+        Populate(mastery);
+    }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        private string _champion;
+    public string Champion
+    {
+        get => _champion;
+        set => SetProperty(ref _champion, value);
+    }
 
-        public string Champion
-        {
-            get => _champion;
-            set => SetProperty(ref _champion, value);
-        }
+    public byte Level
+    {
+        get => _level;
+        set => SetProperty(ref _level, value);
+    }
 
-        private byte _level;
+    public string Points
+    {
+        get => _points;
+        set => SetProperty(ref _points, value);
+    }
 
-        public byte Level
-        {
-            get => _level;
-            set => SetProperty(ref _level, value);
-        }
+    public bool? IsChestGranted
+    {
+        get => _isChestGranted;
+        set => SetProperty(ref _isChestGranted, value);
+    }
 
-        private string _points;
+    public string LastPlayed
+    {
+        get => _lastPlayed;
+        set => SetProperty(ref _lastPlayed, value);
+    }
 
-        public string Points
-        {
-            get => _points;
-            set => SetProperty(ref _points, value);
-        }
+    public ChampionMastery Mastery { get; private set; }
 
-        private bool? _isChestGranted;
-
-        public bool? IsChestGranted
-        {
-            get => _isChestGranted;
-            set => SetProperty(ref _isChestGranted, value);
-        }
-
-        private string _lastPlayed;
-
-        public string LastPlayed
-        {
-            get => _lastPlayed;
-            set => SetProperty(ref _lastPlayed, value);
-        }
-
-        public ChampionMastery Mastery => _mastery;
-        
-        public void Populate(ChampionMastery championMastery)
-        {
-            _mastery = championMastery;
-            Champion = championMastery.ChampionId.ToChampion().ToString();
-            Level = (byte)championMastery.ChampionLevel;
-            Points = championMastery.ChampionPoints.ToString("N0");
-            IsChestGranted = championMastery.ChestGranted;
-            LastPlayed = TimeHelper.JavaTimeStampToDateTime(championMastery.LastPlayTime).Humanize();
-        }
+    public void Populate(ChampionMastery championMastery)
+    {
+        Mastery = championMastery;
+        Champion = championMastery.ChampionId.ToChampion().ToString();
+        Level = (byte) championMastery.ChampionLevel;
+        Points = championMastery.ChampionPoints.ToString("N0");
+        IsChestGranted = championMastery.ChestGranted;
+        LastPlayed = TimeHelper.JavaTimeStampToDateTime(championMastery.LastPlayTime).Humanize();
     }
 }

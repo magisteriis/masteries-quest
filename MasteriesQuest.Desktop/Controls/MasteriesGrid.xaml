@@ -2,38 +2,36 @@
     x:Class="MasteriesQuest.Controls.MasteriesGrid"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MasteriesQuest.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:lol="using:RiotGames.LeagueOfLegends"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor">Navy</SolidColorBrush>
     </UserControl.Resources>
 
-    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{x:Bind MasteriesSource, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False" CanUserSortColumns="True">
+    <ct:DataGrid x:Name="MasteriesDataGrid" ItemsSource="{x:Bind MasteriesSource, Mode=OneWay}" IsReadOnly="True"
+                 AutoGenerateColumns="False" CanUserSortColumns="True">
         <ct:DataGrid.Columns>
-            <ct:DataGridTextColumn 
-                Header="Champion" 
+            <ct:DataGridTextColumn
+                Header="Champion"
                 Width="SizeToCells"
                 Binding="{Binding Champion}" />
-            <ct:DataGridTextColumn 
-                Header="Level" 
+            <ct:DataGridTextColumn
+                Header="Level"
                 Width="80"
                 Binding="{Binding Level}" />
-            <ct:DataGridTextColumn 
-                Header="Points" 
+            <ct:DataGridTextColumn
+                Header="Points"
                 Width="SizeToCells"
                 Binding="{Binding Points}" />
-            <ct:DataGridCheckBoxColumn 
-                Header="Chest" 
+            <ct:DataGridCheckBoxColumn
+                Header="Chest"
                 Width="80"
                 Binding="{Binding IsChestGranted}" />
-            <ct:DataGridTextColumn 
-                Header="Last Played" 
+            <ct:DataGridTextColumn
+                Header="Last Played"
                 Width="SizeToCells"
                 Binding="{Binding LastPlayed}" />
-        </ct:DataGrid.Columns> 
+        </ct:DataGrid.Columns>
     </ct:DataGrid>
 </UserControl>

@@ -1,81 +1,81 @@
-﻿@inject ILocalStorageService localStorage
+﻿@using RiotGames.LeagueOfLegends
+@inject ILocalStorageService localStorage
 @inject NavigationManager NavManager
-@using RiotGames.LeagueOfLegends
 
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
+<!-- Sidebar Toggle (Topbar) -->
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
 
-    <EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
-        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control" 
-                    style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" DisplayName="Server">
-                    @foreach(var server in _summonerSearch.Servers)
-                    {
-                        var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
-                        <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>                        
-                    }
-                </InputSelect>
-            </div>
-            <InputText name="summoner-name" class="form-control" aria-label="Search" aria-describedby="basic-addon2"
-                @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
+<EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
+          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control"
+                         style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;" DisplayName="Server">
+                @foreach (var server in _summonerSearch.Servers)
+                {
+                    var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
+                    <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>
+                }
+            </InputSelect>
         </div>
-    </EditForm>
+        <InputText name="summoner-name" class="form-control" aria-label="Search" aria-describedby="basic-addon2"
+                   @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..."/>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</EditForm>
 
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
 
-        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-        <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-            </a>
-            <!-- Dropdown - Search -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
-                <EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
-                    class="form-inline mr-auto w-100 navbar-search">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control bg-light border-0 small" 
-                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" DisplayName="Server">
-                                @foreach(var server in Server.All.Where(s => s != Server.PBE))
-                                {
-                                    var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
-                                    <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>                        
-                                }
-                            </InputSelect>
-                        </div>
-                        <InputText name="summoner-name" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"
-                            @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..." />
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
+    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+    <li class="nav-item dropdown no-arrow d-sm-none">
+        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-search fa-fw"></i>
+        </a>
+        <!-- Dropdown - Search -->
+        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+             aria-labelledby="searchDropdown">
+            <EditForm Model="@_summonerSearch" OnValidSubmit="@HandleValidSubmit"
+                      class="form-inline mr-auto w-100 navbar-search">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <InputSelect name="summoner-region" @bind-Value="_summonerSearch.Platform" class="form-control bg-light border-0 small"
+                                     style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;" DisplayName="Server">
+                            @foreach (var server in Server.All.Where(s => s != Server.PBE))
+                            {
+                                var optionTitle = $"{server.Name} | Released: {server.Release.ToShortDateString()} | Location: {server.Location}";
+                                <option value="@server.Platform" title="@optionTitle">@server.Abbreviation</option>
+                            }
+                        </InputSelect>
                     </div>
-                </EditForm>
-            </div>
-        </li>
+                    <InputText name="summoner-name" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"
+                               @bind-Value="_summonerSearch.SummonerName" DisplayName="Summoner name" placeholder="Search for summoner..."/>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </li>
 
-        <!-- Nav Item - Alerts -->
-@*        <li class="nav-item dropdown no-arrow mx-1">
+    <!-- Nav Item - Alerts -->
+    @*        <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
@@ -125,98 +125,100 @@
             </div>
         </li>
 *@
-        <!-- Nav Item - Messages -->
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
+    <!-- Nav Item - Messages -->
+    <li class="nav-item dropdown no-arrow mx-1">
+        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>
+            <!-- Counter - Messages -->
+            <span class="badge badge-danger badge-counter">7</span>
+        </a>
+        <!-- Dropdown - Messages -->
+        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+             aria-labelledby="messagesDropdown">
+            <h6 class="dropdown-header">
+                Message Center
+            </h6>
+            <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
+                <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/4381.png" alt="Miss Fortune icon">
+                    <div class="status-indicator bg-success"></div>
+                </div>
+                <div class="font-weight-bold">
+                    <div class="text-truncate">I've got a good feeling about this.</div>
+                    <div class="small text-gray-500">Miss Fortune "the Bounty Hunter" · 58m</div>
+                </div>
             </a>
-            <!-- Dropdown - Messages -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                    Message Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/4381.png" alt="Miss Fortune icon">
-                        <div class="status-indicator bg-success"></div>
-                    </div>
-                    <div class="font-weight-bold">
-                        <div class="text-truncate">I've got a good feeling about this.</div>
-                        <div class="small text-gray-500">Miss Fortune "the Bounty Hunter" · 58m</div>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3866.png" alt="Master Yi icon">
-                        <div class="status-indicator"></div>
-                    </div>
-                    <div>
-                        <div class="text-truncate">The focused mind can pierce through stone.</div>
-                        <div class="small text-gray-500">Master Yi "the Wuju Bladesman" · 1d</div>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3005.png" alt="Ashe icon">
-                        <div class="status-indicator bg-warning"></div>
-                    </div>
-                    <div>
-                        <div class="text-truncate">Hmph, 'Destiny'. I have always hated that word. 
-                            It is a wyrm that ruins lives and murders innocence. It is a deceiver and bringer of woe.!</div>
-                        <div class="small text-gray-500">Ashe "the Forst Archer" · 2d</div>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3223.png" alt="Nasus icon">
-                        <div class="status-indicator bg-success"></div>
-                    </div>
-                    <div>
-                        <div class="text-truncate">The cycle of life and death continues. We will live, they will die.</div>
-                        <div class="small text-gray-500">Nasus "the Curator of the Sands" · 2w</div>
-                    </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">Read More Messages</a>
-            </div>
-        </li>
-
-        <div class="topbar-divider d-none d-sm-block"></div>
-
-        <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Vex "The Gloomist"</span>
-                <img class="img-profile rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/5212.png">
+            <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
+                <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3866.png" alt="Master Yi icon">
+                    <div class="status-indicator"></div>
+                </div>
+                <div>
+                    <div class="text-truncate">The focused mind can pierce through stone.</div>
+                    <div class="small text-gray-500">Master Yi "the Wuju Bladesman" · 1d</div>
+                </div>
             </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
-            </div>
-        </li>
+            <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
+                <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3005.png" alt="Ashe icon">
+                    <div class="status-indicator bg-warning"></div>
+                </div>
+                <div>
+                    <div class="text-truncate">
+                        Hmph, 'Destiny'. I have always hated that word.
+                        It is a wyrm that ruins lives and murders innocence. It is a deceiver and bringer of woe.!
+                    </div>
+                    <div class="small text-gray-500">Ashe "the Forst Archer" · 2d</div>
+                </div>
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">
+                <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/3223.png" alt="Nasus icon">
+                    <div class="status-indicator bg-success"></div>
+                </div>
+                <div>
+                    <div class="text-truncate">The cycle of life and death continues. We will live, they will die.</div>
+                    <div class="small text-gray-500">Nasus "the Curator of the Sands" · 2w</div>
+                </div>
+            </a>
+            <a class="dropdown-item text-center small text-gray-500" href="https://youtu.be/b8lNUArJvvs" target="_blank" rel="noopener noreferrer">Read More Messages</a>
+        </div>
+    </li>
 
-    </ul>
+    <div class="topbar-divider d-none d-sm-block"></div>
+
+    <!-- Nav Item - User Information -->
+    <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Vex "The Gloomist"</span>
+            <img class="img-profile rounded-circle" src="https://ddragon.leagueoflegends.com/cdn/12.2.1/img/profileicon/5212.png">
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+             aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="#">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+            </a>
+            <a class="dropdown-item" href="#">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                Settings
+            </a>
+            <a class="dropdown-item" href="#">
+                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                Activity Log
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+            </a>
+        </div>
+    </li>
+
+</ul>
 
 </nav>
 <!-- End of Topbar -->
@@ -229,7 +231,7 @@
     {
         var savedRegion = await localStorage.GetItemAsync<PlatformRoute?>("region");
         if (savedRegion != null)
-            _summonerSearch.Platform = (PlatformRoute)savedRegion;
+            _summonerSearch.Platform = (PlatformRoute) savedRegion;
     }
 
     private async Task HandleValidSubmit()
@@ -242,13 +244,14 @@
         var summoner = await localStorage.GetSummonerAsync(_summonerSearch.Platform, _summonerSearch.SummonerName);
 
         if (summoner == null)
-            using (RiotGames.LeagueOfLegends.LeagueOfLegendsClient client = new("github", _summonerSearch.Platform))
-            {
-                summoner = await client.GetSummonerByNameAsync(_summonerSearch.SummonerName);
-                await localStorage.SetSummonerAsync(_summonerSearch.Platform, summoner);
-            }
+        {
+            using LeagueOfLegendsClient client = new("github", _summonerSearch.Platform);
+            summoner = await client.GetSummonerByNameAsync(_summonerSearch.SummonerName);
+            await localStorage.SetSummonerAsync(_summonerSearch.Platform, summoner);
+        }
 
         NavManager.NavigateTo(_summonerSearch.Platform, summoner);
         _summonerSearch.SummonerName = null;
     }
+
 }

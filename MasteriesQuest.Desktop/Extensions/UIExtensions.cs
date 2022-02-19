@@ -1,41 +1,37 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
+using PInvoke;
+using WinRT.Interop;
 
-namespace MasteriesQuest
+namespace MasteriesQuest;
+
+internal static class UIExtensions
 {
-    internal static class UIExtensions
+    public static void AddKeyboardAccelerator(this UIElement element, VirtualKeyModifiers keyModifiers, VirtualKey key,
+        TypedEventHandler<KeyboardAccelerator, KeyboardAcceleratorInvokedEventArgs> handler)
     {
-        public static void AddKeyboardAccelerator(this UIElement element, VirtualKeyModifiers keyModifiers, VirtualKey key,
-            TypedEventHandler<KeyboardAccelerator, KeyboardAcceleratorInvokedEventArgs> handler)
-        {
-            var accelerator =
-                new KeyboardAccelerator()
-                {
-                    Modifiers = keyModifiers,
-                    Key = key
-                };
-            accelerator.Invoked += handler;
-            element.KeyboardAccelerators.Add(accelerator);
-        }
+        var accelerator =
+            new KeyboardAccelerator
+            {
+                Modifiers = keyModifiers,
+                Key = key
+            };
+        accelerator.Invoked += handler;
+        element.KeyboardAccelerators.Add(accelerator);
+    }
 
-        public static void SetWindowIcon(this Window window, string iconName)
-        {
-            //Get the Window's HWND
-            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            var smallIcon = PInvoke.User32.LoadImage(System.IntPtr.Zero, iconName,
-                        PInvoke.User32.ImageType.IMAGE_ICON, 16, 16, PInvoke.User32.LoadImageFlags.LR_LOADFROMFILE);
-            var bigIcon = PInvoke.User32.LoadImage(System.IntPtr.Zero, iconName,
-                        PInvoke.User32.ImageType.IMAGE_ICON, 256, 256, PInvoke.User32.LoadImageFlags.LR_LOADFROMFILE);
+    public static void SetWindowIcon(this Window window, string iconName)
+    {
+        //Get the Window's HWND
+        var hwnd = WindowNative.GetWindowHandle(window);
+        var smallIcon = User32.LoadImage(IntPtr.Zero, iconName,
+            User32.ImageType.IMAGE_ICON, 16, 16, User32.LoadImageFlags.LR_LOADFROMFILE);
+        var bigIcon = User32.LoadImage(IntPtr.Zero, iconName,
+            User32.ImageType.IMAGE_ICON, 256, 256, User32.LoadImageFlags.LR_LOADFROMFILE);
 
-            PInvoke.User32.SendMessage(hwnd, PInvoke.User32.WindowMessage.WM_SETICON, (IntPtr)0, smallIcon);
-            PInvoke.User32.SendMessage(hwnd, PInvoke.User32.WindowMessage.WM_SETICON, (IntPtr)1, bigIcon);
-        }
+        User32.SendMessage(hwnd, User32.WindowMessage.WM_SETICON, (IntPtr) 0, smallIcon);
+        User32.SendMessage(hwnd, User32.WindowMessage.WM_SETICON, (IntPtr) 1, bigIcon);
     }
 }
