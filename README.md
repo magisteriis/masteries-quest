@@ -13,7 +13,7 @@ Live at: [masteries.quest](https://masteries.quest)
 
 # Desktop (Alpha)
 
-[![image](https://user-images.githubusercontent.com/3706841/154972100-84af025e-8e83-452b-ab6a-062893dfd7a7.png)](https://www.microsoft.com/store/productId/9PGPC2D1SH2B)
+<a href="https://www.microsoft.com/store/productId/9PGPC2D1SH2B"><img src="https://user-images.githubusercontent.com/3706841/154972100-84af025e-8e83-452b-ab6a-062893dfd7a7.png" height="104" width="288" /></a>
 
 
 ![image](https://user-images.githubusercontent.com/3706841/152638484-755b9c9a-c606-4777-9306-def38d80735e.png)
