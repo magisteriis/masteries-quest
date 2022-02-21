@@ -7,5 +7,5 @@ Additionally, The Masteries Quest uses 3rd party services, please see their priv
 - Riot Games API https://www.riotgames.com/en/privacy-notice
 
 ## Contact
-For general privacy related question: privacy@masteries.quest
-For GDPR related question: privacy+gdpr@masteries.quest
+- For general privacy related question: privacy@masteries.quest
+- For GDPR related question: privacy+gdpr@masteries.quest
