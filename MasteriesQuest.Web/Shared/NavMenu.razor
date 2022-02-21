@@ -40,8 +40,22 @@
                 <i class="fa-solid fa-angle-left" style="color: rgba(255, 255, 255, .5); margin-right: .1rem;"></i>
             </button>
         </div>
+        
+        <div class="sidebar-card d-none d-lg-flex animated--grow-in">
+            <a href="ms-windows-store://pdp/?ProductId=9PGPC2D1SH2B">
+                <img class="sidebar-card-illustration mb-2 align-self-center" src="https://getbadgecdn.azureedge.net/images/English_L.png" alt="Get it from Microsoft">
+                <p class="text-center mb-2"><strong>The Store app</strong> is integrated with the League Client!</p>
+                <a class="btn btn-success btn-sm" href="ms-windows-store://pdp/?ProductId=9PGPC2D1SH2B">Get it now!</a>
+            </a>
+        </div>
     </nav>
 </div>
+
+<style>
+    body.sidebar-toggled .sidebar .sidebar-card {
+        display: none !important;
+    }
+</style>
 
 @code {
 
