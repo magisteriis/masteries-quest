@@ -10,27 +10,25 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <ScrollViewer VerticalScrollMode="Auto">
-            <ItemsRepeater x:Name="WrapPanelContainer" ItemsSource="{x:Bind HighscoresOverview.Champions}">
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate x:DataType="viewModels:ChampionHighscoresViewModel">
-                        <StackPanel>
-                            <TextBlock Text="{x:Bind ChampionName}" />
-                            <ItemsRepeater ItemsSource="{x:Bind Highscores}">
-                                <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate x:DataType="viewModels:HighscoreEntryViewModel">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Bind SummonerName}" />
-                                            <TextBlock Text="{x:Bind Score}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsRepeater.ItemTemplate>
-                            </ItemsRepeater>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
-        </ScrollViewer>
+        <GridView ItemsSource="{x:Bind HighscoresOverview.Champions}">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="viewModels:ChampionHighscoresViewModel">
+                    <StackPanel Width="280">
+                        <TextBlock Text="{x:Bind ChampionName}" FontSize="24" />
+                        <ItemsRepeater ItemsSource="{x:Bind Highscores}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="viewModels:HighscoreEntryViewModel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind SummonerName}" Margin="0,0,24,0" />
+                                        <TextBlock Text="{x:Bind Score}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
         <controls:Loading x:Name="Loading" IsLoading="True" />
         <controls:Error x:Name="Error" />
     </Grid>

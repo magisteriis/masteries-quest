@@ -52,6 +52,7 @@ public sealed partial class MainWindow : Window
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        if (string.IsNullOrEmpty(AutoSuggestBoxControl.Text)) return;
         AutoSuggestBoxControl.Text = null;
         MainNavigationView.SelectedItem = null;
         contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
