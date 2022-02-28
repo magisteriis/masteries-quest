@@ -3,7 +3,7 @@
 
 ![champion-mastery](https://user-images.githubusercontent.com/3706841/150699592-aa690116-c61d-4859-99a8-033ab71a6359.jpg)
 
-A Champion Mastery Blazor WebAssembly app that uses [MikaelDui.RiotGames.Client](https://github.com/mikaeldui/riot-games-dotnet-client) and a Cloudflare Worker.
+**The Masteries Quest** is a League of Legends mastery app, created with Blazor WebAssembly and WinUI 3, and uses [MikaelDui.RiotGames.Client](https://github.com/mikaeldui/riot-games-dotnet-client) and a Cloudflare Worker.
 
 # Web (Beta)
 
