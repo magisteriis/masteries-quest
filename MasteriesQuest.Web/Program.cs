@@ -3,14 +3,34 @@ using MasteriesQuest;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using RiotGames;
+using Sentry;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#wrapper");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+// Capture blazor bootstrapping errors
+using var sdk = SentrySdk.Init(o =>
+{
+    o.Dsn = "https://343d1808f4484ecbbb750364d3db023a@o1160036.ingest.sentry.io/6244373";
+    o.Debug = true;
+});
+try
+{
+    var builder = WebAssemblyHostBuilder.CreateDefault(args);
+    builder.RootComponents.Add<App>("#wrapper");
+    builder.RootComponents.Add<HeadOutlet>("head::after");
 
-RiotGamesApiHttpClient.BaseAddressFormat = "https://masteries.quest/api/{0}/";
+    builder.Logging.SetMinimumLevel(LogLevel.Debug);
+    // Captures logError and higher as events
+    builder.Logging.AddSentry(o => o.InitializeSdk = false);
 
-builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddScoped(sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+    RiotGamesApiHttpClient.BaseAddressFormat = "https://masteries.quest/api/{0}/";
 
-await builder.Build().RunAsync();
+    builder.Services.AddBlazoredLocalStorage();
+    builder.Services.AddScoped(sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+
+    await builder.Build().RunAsync();
+}
+catch (Exception e)
+{
+    SentrySdk.CaptureException(e);
+    await SentrySdk.FlushAsync(TimeSpan.FromSeconds(2));
+    throw;
+}

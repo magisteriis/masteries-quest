@@ -35,7 +35,8 @@ public sealed partial class MainWindow : Window
         }
         else
         {
-            var selectedItem = (NavigationViewItem) args.SelectedItem;
+            var selectedItem = args.SelectedItem as NavigationViewItem;
+            if (selectedItem != null)
             {
                 var selectedItemTag = (string) selectedItem.Tag;
                 var pageName = "MasteriesQuest.Pages." + selectedItemTag;

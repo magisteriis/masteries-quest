@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using RiotGames;
+using Sentry;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -20,6 +21,26 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        this.UnhandledException += App_UnhandledException;
+        SentrySdk.Init(o =>
+        {
+            o.Dsn = "https://af60b505c70946ef8557fa9a54d21971@o1160036.ingest.sentry.io/6244360";
+#if DEBUG
+            // When configuring for the first time, to see what the SDK is doing:
+            o.Debug = true;
+#endif
+            // Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
+            // We recommend adjusting this value in production.
+            o.TracesSampleRate = 1.0;
+        });
+    }
+
+    private static void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    {
+        SentrySdk.CaptureException(e.Exception);
+
+        // If you want to avoid the application from crashing:
+        e.Handled = true;
     }
 
     /// <summary>
