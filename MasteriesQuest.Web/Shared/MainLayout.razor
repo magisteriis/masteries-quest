@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject ILocalStorageService LocalStorage
 
 <NavMenu/>
 
@@ -22,3 +23,15 @@
     <Footer/>
 </div>
 <!-- End of Content Wrapper -->
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        if (await LocalStorage.GetItemAsStringAsync("version") != "2")
+        {
+            await LocalStorage.ClearAsync();
+            await LocalStorage.SetItemAsStringAsync("version", "2");
+        }
+    }
+}
