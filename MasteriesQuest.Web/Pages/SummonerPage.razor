@@ -123,11 +123,8 @@
                     <tbody>
                     @foreach (var mastery in masteries)
                     {
-                        var champHighscoresLink = $"/highscores/{mastery.ChampionId.ToChampion().ToString().ToLower()}";
                         <tr>
-                            <th>
-                                <a href="@champHighscoresLink">@mastery.ChampionId.ToChampion()</a>
-                            </th>
+                            <th>@mastery.ChampionId.ToChampion()</th>
                             <td>@mastery.ChampionLevel</td>
                             <td>@mastery.ChampionPoints.ToString("N0")</td>
                             <td>@mastery.ChestGranted.ToUnicode()</td>
