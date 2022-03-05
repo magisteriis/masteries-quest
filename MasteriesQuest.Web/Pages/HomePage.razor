@@ -118,7 +118,7 @@
                 try
                 {
                     foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId)) // While on dev token
-                {
+                    {
                         _loadFeaturedGamesCancellationToken.Token.ThrowIfCancellationRequested();
                         using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
                         {
@@ -131,7 +131,7 @@
 
                                 StateHasChanged();
 
-                                await Task.Delay(500, _loadFeaturedGamesCancellationToken.Token); // While on dev token
+                                //await Task.Delay(500, _loadFeaturedGamesCancellationToken.Token); // While on dev token
                         }
                         }
                     }
