@@ -1,5 +1,4 @@
-﻿using ChampionMasteryGg;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using RiotGames;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -31,8 +30,6 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         RiotGamesApiHttpClient.BaseAddressFormat = "https://masteries.quest/api/{0}/";
-        ChampionMasteryGgClient.BaseAddress = "https://masteries.quest/api/highscores/";
-        ChampionMasteryGgClient.Encoding = ChampionMasteryGgEncoding.Json;
 
         _window = new MainWindow();
         _window.Activate();

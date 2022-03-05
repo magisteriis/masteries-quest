@@ -43,6 +43,5 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
     <PackageReference Include="Humanizer.Core" Version="*" />
     <PackageReference Include="MikaelDui.RiotGames.Client" Version="*" />
-    <PackageReference Include="MikaelDui.ChampionMasteryGg.Client" Version="*" />
   </ItemGroup>
 </Project>
