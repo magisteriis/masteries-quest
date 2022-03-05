@@ -34,7 +34,6 @@
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage" IsSelected="True" />
-                <NavigationViewItem Icon="World" Content="Highscores" Tag="HighscoresPage" />
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" />
         </NavigationView>

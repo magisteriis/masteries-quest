@@ -16,7 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChampionMasteryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FeaturedGamesViewModel.cs" />
-    <Compile Include="..\MasteriesQuest.Shared\ViewModels\HighscoresOverviewViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerSearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummonerViewModel.cs" />
   </ItemGroup>
