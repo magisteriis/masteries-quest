@@ -125,7 +125,7 @@
                                 var summoner = await client.GetSummonerByNameAsync(participant.SummonerName);
                                 var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
 
-                                return new KeyValuePair<(string region, string summonerName), int>((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+                                return new KeyValuePair<(string region, string summonerName), int>((platformGames.Key, participant.SummonerName), masteries.Where(m => m.ChampionId == participant.ChampionId).Select(m => m.ChampionPoints).SingleOrDefault());
                             }
                             catch (Exception ex)
                             {
