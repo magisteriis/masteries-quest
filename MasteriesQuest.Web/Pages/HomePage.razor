@@ -43,7 +43,7 @@
                                                     @participant.SummonerName
                                                 }
 
-                                                @if (_masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
+                                                @if (_masteryPoints != null && _masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
                                                 {
                                                     <span class="badge badge-primary badge-pill">@championPoints.ToString("N0") pts</span>
                                                 }
@@ -75,9 +75,7 @@
     [Parameter]
     public string? ServerAbbreviation { get; set; }
 
-    private readonly CancellationTokenSource _loadFeaturedGamesCancellationToken = new();
-
-    readonly Dictionary<(string region, string summonerName), int> _masteryPoints = new();
+    private readonly Dictionary<(string region, string summonerName), int> _masteryPoints = new();
 
     LeagueOfLegendsReadOnlyCollection<SpectatorFeaturedGameInfo>? _featuredGames;
 
@@ -108,39 +106,32 @@
         {
             using (var client = new LeagueOfLegendsClient("github", server))
             {
-                var featuredGames = await client.GetSpectatorFeaturedGamesAsync(_loadFeaturedGamesCancellationToken.Token);
+                var featuredGames = await client.GetSpectatorFeaturedGamesAsync();
                 _featuredGames = featuredGames.GameList;
             }
 
-            // TODO: Maybe Task.Run isn't needed.
-            _ = Task.Run(async () =>
+            foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId))
             {
-                try
+                Task<KeyValuePair<(string region, string summonerName), int>>[] masteryTasks;
+                using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
                 {
-                    foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId)) // While on dev token
+                    masteryTasks = platformGames.SelectMany(g => g.Participants).Select(async participant =>
                     {
-                        _loadFeaturedGamesCancellationToken.Token.ThrowIfCancellationRequested();
-                        using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
-                        {
-                            foreach (var participant in platformGames.SelectMany(g => g.Participants))
-                            {
-                                var summoner = await client.GetSummonerByNameAsync(participant.SummonerName, _loadFeaturedGamesCancellationToken.Token);
-                                var masteries = await client.GetChampionMasteriesAsync(summoner.Id, _loadFeaturedGamesCancellationToken.Token);
+                        var summoner = await client.GetSummonerByNameAsync(participant.SummonerName);
+                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
 
-                                _masteryPoints.Add((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+                        return new KeyValuePair<(string region, string summonerName), int>((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
 
-                                StateHasChanged();
-
-                                //await Task.Delay(500, _loadFeaturedGamesCancellationToken.Token); // While on dev token
-                        }
-                        }
-                    }
+                    }).ToArray();
                 }
-                catch
-                {
-                // Ignore
+
+                var result = await Task.WhenAll(masteryTasks);
+                foreach (var (key, value) in result)
+                    _masteryPoints.Add(key, value);
+
+                StateHasChanged();
             }
-            }, _loadFeaturedGamesCancellationToken.Token);
+
         }
         catch
         {
@@ -150,8 +141,6 @@
 
     public void Dispose()
     {
-        _loadFeaturedGamesCancellationToken.Cancel();
-        _loadFeaturedGamesCancellationToken.Dispose();
     }
 
 }
