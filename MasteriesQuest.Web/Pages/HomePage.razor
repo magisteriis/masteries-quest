@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/{ServerAbbreviation}"
 @using RiotGames.LeagueOfLegends
+@using Sentry
 @implements IDisposable
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
@@ -43,7 +44,7 @@
                                                     @participant.SummonerName
                                                 }
 
-                                                @if (_masteryPoints != null && _masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
+                                                @if (_masteryPoints.TryGetValue((game.PlatformId, participant.SummonerName), out var championPoints))
                                                 {
                                                     <span class="badge badge-primary badge-pill">@championPoints.ToString("N0") pts</span>
                                                 }
@@ -110,27 +111,39 @@
                 _featuredGames = featuredGames.GameList;
             }
 
-            foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId))
+            _ = Task.Run(async () =>
             {
-                Task<KeyValuePair<(string region, string summonerName), int>>[] masteryTasks;
-                using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
+                foreach (var platformGames in _featuredGames.GroupBy(g => g.PlatformId))
                 {
-                    masteryTasks = platformGames.SelectMany(g => g.Participants).Select(async participant =>
+                    KeyValuePair<(string region, string summonerName), int>[] result;
+                    using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
                     {
-                        var summoner = await client.GetSummonerByNameAsync(participant.SummonerName);
-                        var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
+                        var masteryTasks = platformGames.SelectMany(g => g.Participants).Select(async participant =>
+                        {
+                            try
+                            {
+                                var summoner = await client.GetSummonerByNameAsync(participant.SummonerName);
+                                var masteries = await client.GetChampionMasteriesAsync(summoner.Id);
 
-                        return new KeyValuePair<(string region, string summonerName), int>((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+                                return new KeyValuePair<(string region, string summonerName), int>((platformGames.Key, participant.SummonerName), masteries.Single(m => m.ChampionId == participant.ChampionId).ChampionPoints);
+                            }
+                            catch (Exception ex)
+                            {
+                                SentrySdk.CaptureException(ex);
+                                return default;
+                            }
+                        }).ToArray();
 
-                    }).ToArray();
+                        result = await Task.WhenAll(masteryTasks);
+                    }
+
+                    foreach (var (key, value) in result)
+                        _masteryPoints.Add(key, value);
+
+                    StateHasChanged();
+
                 }
-
-                var result = await Task.WhenAll(masteryTasks);
-                foreach (var (key, value) in result)
-                    _masteryPoints.Add(key, value);
-
-                StateHasChanged();
-            }
+            }).ConfigureAwait(false);
 
         }
         catch
