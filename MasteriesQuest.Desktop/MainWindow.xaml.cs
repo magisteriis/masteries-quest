@@ -46,20 +46,6 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
-        // TODO: Suggest past summoner and maybe lookup the current text to correct capitalization etc.
-    }
-
-    private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        if (string.IsNullOrEmpty(AutoSuggestBoxControl.Text)) return;
-        AutoSuggestBoxControl.Text = null;
-        MainNavigationView.SelectedItem = null;
-        contentFrame.Navigate(typeof(SummonerPage), args.QueryText);
-        contentFrame.Focus(FocusState.Programmatic);
-    }
-
     private async Task _readSummonersFromLcuAsync()
     {
         try
@@ -76,5 +62,19 @@ public sealed partial class MainWindow : Window
         catch (TimeoutException)
         {
         }
+    }
+
+    public void Navigate(Type sourcePageType, object? parameter)
+    {
+        MainNavigationView.SelectedItem = null;
+        contentFrame.Navigate(sourcePageType, parameter);
+        contentFrame.Focus(FocusState.Programmatic);
+    }
+
+    private void SummonerSearchBox_OnSearchClicked(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(SummonerSearchBox.SummonerSearch.SummonerName)) return;
+        Navigate(typeof(SummonerPage), SummonerSearchBox.SummonerSearch.SummonerName);
+        SummonerSearchBox.SummonerSearch.SummonerName = null;
     }
 }

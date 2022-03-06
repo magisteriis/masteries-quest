@@ -12,7 +12,9 @@ namespace MasteriesQuest;
 /// </summary>
 public partial class App : Application
 {
-    private Window _window;
+#nullable disable
+    public static MainWindow Window { get; private set; }
+#nullable restore
 
     /// <summary>
     ///     Initializes the singleton application object.  This is the first line of authored code
@@ -52,7 +54,7 @@ public partial class App : Application
     {
         RiotGamesApiHttpClient.BaseAddressFormat = "https://masteries.quest/api/{0}/";
 
-        _window = new MainWindow();
-        _window.Activate();
+        Window = new MainWindow();
+        Window.Activate();
     }
 }

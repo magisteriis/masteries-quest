@@ -29,5 +29,12 @@ namespace MasteriesQuest.Pages
         {
             this.InitializeComponent();
         }
+
+        private void SummonerSearchBox_OnSearchClicked(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(SummonerSearchBox.SummonerSearch.SummonerName)) return;
+            App.Window.Navigate(typeof(SummonerPage), SummonerSearchBox.SummonerSearch.SummonerName);
+            SummonerSearchBox.SummonerSearch.SummonerName = null;
+        }
     }
 }

@@ -10,7 +10,7 @@
   <Identity
     Name="63348Swebias.TheMasteriesQuest"
     Publisher="CN=731C04CF-6B3E-4849-9E07-A8FD19D79A09"
-    Version="1.0.1.0" />
+    Version="1.0.2.0" />
 
   <Properties>
     <DisplayName>The Masteries Quest</DisplayName>

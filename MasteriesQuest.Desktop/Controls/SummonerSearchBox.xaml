@@ -26,10 +26,10 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <ComboBox Grid.Column="0" x:Name="ServeComboBox" ItemsSource="{Binding Servers}"
-                  SelectedItem="{Binding Server}" DisplayMemberPath="Abbreviation"
+                  SelectedItem="{Binding Server, Mode=TwoWay}" DisplayMemberPath="Abbreviation"
                   FontSize="{x:Bind FontSize}" Background="#00007d" PlaceholderText="NA"
                   Margin="0" />
-        <TextBox Grid.Column="1" x:Name="SummonerNameTextBox" Text="{Binding SummonerName}"
+        <TextBox Grid.Column="1" x:Name="SummonerNameTextBox" Text="{Binding SummonerName, Mode=TwoWay}" PreviewKeyDown="SummonerNameTextBox_OnPreviewKeyDown"
                  PlaceholderText="Search for summoner..."
                  FontSize="{x:Bind FontSize}" Background="#00007d"
                  CornerRadius="0" Margin="0" />

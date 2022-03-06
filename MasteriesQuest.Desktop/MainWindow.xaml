@@ -20,15 +20,9 @@
 
         <NavigationView Grid.Row="1" x:Name="MainNavigationView" IsBackButtonVisible="Collapsed"
                         SelectionChanged="MainNavigationView_SelectionChanged" Background="Navy">
-            <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="AutoSuggestBoxControl" QueryIcon="Find" AutomationProperties.Name="Search"
-                                PlaceholderText="Search for summoner..."
-                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
-            </NavigationView.AutoSuggestBox>
-
             <NavigationView.PaneCustomContent>
                 <Grid Padding="12,0">
-                    <controls:SummonerSearchBox />
+                    <controls:SummonerSearchBox x:Name="SummonerSearchBox" SearchClicked="SummonerSearchBox_OnSearchClicked" />
                 </Grid>
             </NavigationView.PaneCustomContent>
 
