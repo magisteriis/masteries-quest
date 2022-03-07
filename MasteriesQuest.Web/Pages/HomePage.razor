@@ -118,7 +118,7 @@
                     KeyValuePair<(string region, string summonerName), int>[] result;
                     using (var client = new LeagueOfLegendsClient("github", Server.Parse(platformGames.Key)))
                     {
-                        var masteryTasks = platformGames.SelectMany(g => g.Participants).Select(async participant =>
+                        var masteryTasks = platformGames.SelectMany(g => g.Participants).DistinctBy(p => p.SummonerName).Select(async participant =>
                         {
                             try
                             {
