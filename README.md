@@ -5,6 +5,15 @@
 
 **The Masteries Quest** is a League of Legends mastery app, created with Blazor WebAssembly and WinUI 3, and uses [MikaelDui.RiotGames.Client](https://github.com/mikaeldui/riot-games-dotnet-client) and a Cloudflare Worker.
 
+It's a demo project for [MikaelDui.RiotGames.Client](https://github.com/mikaeldui/riot-games-dotnet-client), a .NET Library for Riot Games and their games League of Legends, Legends of Runeterra, Teamfight Tactics and VALORANT.
+
+The project is licensed under The Unlicense and you're free to use any and all code without mentioning where you got it from.
+
+# Sponsors
+A big thank you for your support!
+
+[![JetBrains Logo (Main) logo](https://raw.githubusercontent.com/mikaeldui/riot-games-dotnet-client/main/sponsors/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+
 # Web (Beta)
 
 Live at: [masteries.quest](https://masteries.quest)
