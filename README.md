@@ -12,6 +12,7 @@ The project is licensed under The Unlicense and you're free to use any and all c
 # Sponsors
 A big thank you for your support!
 
+[![Sentry Logo](https://raw.githubusercontent.com/mikaeldui/riot-games-dotnet-client/main/sponsors/sentry.svg)](https://sentry.io/for/good/)
 [![JetBrains Logo (Main) logo](https://raw.githubusercontent.com/mikaeldui/riot-games-dotnet-client/main/sponsors/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
 
 # Web (Beta)
