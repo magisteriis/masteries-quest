@@ -9,6 +9,7 @@ using Sentry;
 using var sdk = SentrySdk.Init(o =>
 {
     o.Dsn = "https://343d1808f4484ecbbb750364d3db023a@o1160036.ingest.sentry.io/6244373";
+    o.AutoSessionTracking = true;
 #if DEBUG
     o.Debug = true;
 #endif
