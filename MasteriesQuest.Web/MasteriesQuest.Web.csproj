@@ -9,8 +9,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="*" />
-    <PackageReference Include="Sentry" Version="3.14.1" />
-    <PackageReference Include="Sentry.Extensions.Logging" Version="3.14.1" />
+    <PackageReference Include="Sentry" Version="*" />
+    <PackageReference Include="Sentry.Extensions.Logging" Version="*" />
   </ItemGroup>
 
   <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
