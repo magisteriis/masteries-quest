@@ -130,6 +130,6 @@
   </ItemGroup>
   <Import Project="..\MasteriesQuest.Shared\MasteriesQuest.Shared.projitems" Label="Shared" />
   <ItemGroup>
-    <PackageReference Update="MikaelDui.ChampionMasteryGg.Client" Version="2.0.8" />
+    <PackageReference Update="MikaelDui.ChampionMasteryGg.Client" Version="2.0.9+a168d26" />
   </ItemGroup>
 </Project>
